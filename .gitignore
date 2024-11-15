@@ -1,4 +1,6 @@
 # Ignoring the annoying hidden .DS_Store file for anyone using a Mac
 **/.DS_Store
 
+**/build
+
 # You guys can feel free to add more files to ignore here on your computer!
