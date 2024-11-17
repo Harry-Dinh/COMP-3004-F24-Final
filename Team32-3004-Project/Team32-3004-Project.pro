@@ -11,10 +11,12 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    menu.cpp \
     profile.cpp
 
 HEADERS += \
     mainwindow.h \
+    menu.h \
     profile.h \
     defs.h
 

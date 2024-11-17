@@ -1,5 +1,7 @@
 #include <iostream>
 #include <QDebug>
+#include <QListWidget>
+#include <QLayout>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "defs.h"
@@ -20,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
+
+
+    //create new profile
+    addProfile(0,"first","last",70,200, "20000110","Canda","12345678980", "email@email.com","password");
 }
 
 MainWindow::~MainWindow() {
