@@ -1,4 +1,5 @@
 #include <iostream>
+#include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "defs.h"
@@ -24,6 +25,12 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 MainWindow::~MainWindow() {
     delete ui;
     delete this->batteryTimer;
+
+    //delete all profiles
+    while(!profiles.empty()){
+        delete profiles.back();
+        profiles.pop_back();
+    }
 }
 
 void MainWindow::drainBattery() {
@@ -46,4 +53,18 @@ void MainWindow::powerButtonPressed() {
         ui->powerButton->setText("Power On");
         batteryTimer->stop();           // Simulate the action of turning off the device when the power button is pressed again
     }
+}
+
+void MainWindow::addProfile(int id, const QString &firstName, const QString &lastName,
+                            int weight, int height, const QString &DOB, const QString &country,
+                            const QString &phone, const QString &email, const QString &password){
+
+    Profile *p = new Profile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
+    profiles.append(p);
+    qInfo() << "profile added";
+}
+
+void MainWindow::deleteProfile(int id){
+    delete profiles[id];//deallocate profile with id
+    profiles.erase(profiles.begin()+id);//delete profile at id;
 }
