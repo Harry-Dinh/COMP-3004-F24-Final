@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include "profile.h"
-
+#include "menu.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -25,11 +25,12 @@ class MainWindow : public QMainWindow {
                         int weight, int height, const QString &DOB, const QString &country,
                         const QString &phone, const QString &email, const QString &password);
         void deleteProfile(int id);
-
+        void addMenu(const QString &name, Menu* parent, QLayout *layout);
     private:
         Ui::MainWindow *ui;
         QTimer* batteryTimer;
         int batteryPercentage;
         QVector<Profile*> profiles;
+        QVector<Menu*> menus;
 };
 #endif // MAINWINDOW_H

@@ -129,7 +129,7 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QWidget" name="menuView" native="true">
+    <widget class="QWidget" name="MenuWidget" native="true">
      <property name="geometry">
       <rect>
        <x>0</x>

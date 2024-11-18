@@ -26,6 +26,29 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     //create new profile
     addProfile(0,"first","last",70,200, "20000110","Canda","12345678980", "email@email.com","password");
+
+
+    //create example layout for profile list, placeholder buttons for now
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->setContentsMargins(0,0,0,0);
+    layout->setMargin(0);
+    layout->setSpacing(0);
+    QPushButton* pButton = new QPushButton("Profile1");
+    layout->addWidget(pButton);
+    pButton = new QPushButton("Profile2");
+    layout->addWidget(pButton);
+    pButton = new QPushButton("Profile3");
+    layout->addWidget(pButton);
+    pButton = new QPushButton("Profile4");
+    layout->addWidget(pButton);
+    pButton = new QPushButton("Profile5");
+    layout->addWidget(pButton);
+
+    layout->addStretch(1);//align all buttons on top
+
+    addMenu("Profile Menu", nullptr, layout);//create this menu with layout from above
+
+    ui->MenuWidget->setLayout(menus[0]->getLayout());
 }
 
 MainWindow::~MainWindow() {
@@ -36,6 +59,12 @@ MainWindow::~MainWindow() {
     while(!profiles.empty()){
         delete profiles.back();
         profiles.pop_back();
+    }
+
+    //delete all menus
+    while(!menus.empty()){
+        delete menus.back();
+        menus.pop_back();
     }
 }
 
@@ -73,4 +102,10 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
 void MainWindow::deleteProfile(int id){
     delete profiles[id];//deallocate profile with id
     profiles.erase(profiles.begin()+id);//delete profile at id;
+}
+
+void MainWindow::addMenu(const QString &name, Menu* parent, QLayout *layout){
+    Menu *m = new Menu(name, parent);
+    m->addLayout(layout);//point menu's layout to passed in layout
+    menus.append(m);//add this pointer to the menus list
 }
