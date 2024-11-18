@@ -1,7 +1,11 @@
 #include <iostream>
 #include <QDebug>
-#include <QListWidget>
+#include <QComboBox>
 #include <QLayout>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QDateEdit>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "defs.h"
@@ -13,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
     this->batteryTimer = new QTimer();
     this->batteryPercentage = STARTING_BATTERY_LEVEL;
+    this->selectedProfile = -1;
     
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
@@ -28,28 +33,15 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     addProfile(0,"first","last",70,200, "20000110","Canda","12345678980", "email@email.com","password");
 
 
-    //create example layout for profile list, placeholder buttons for now
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0,0,0,0);
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    QPushButton* pButton = new QPushButton("Profile1");
-    layout->addWidget(pButton);
-    pButton = new QPushButton("Profile2");
-    layout->addWidget(pButton);
-    pButton = new QPushButton("Profile3");
-    layout->addWidget(pButton);
-    pButton = new QPushButton("Profile4");
-    layout->addWidget(pButton);
-    pButton = new QPushButton("Profile5");
-    layout->addWidget(pButton);
 
-    layout->addStretch(1);//align all buttons on top
+    initProfilesMenu();
+    initAddProfileMenu();
 
-    addMenu("Profile Menu", nullptr, layout);//create this menu with layout from above
 
-    ui->menuLabel->setText(menus[0]->getName());
-    ui->MenuWidget->setLayout(menus[0]->getLayout());
+    currMenu = menus[0];
+    ui->menuLabel->setText(currMenu->getName());
+    ui->MenuWidget->setLayout(currMenu->getLayout());
+
 }
 
 MainWindow::~MainWindow() {
@@ -109,4 +101,102 @@ void MainWindow::addMenu(const QString &name, Menu* parent, QLayout *layout){
     Menu *m = new Menu(name, parent);
     m->addLayout(layout);//point menu's layout to passed in layout
     menus.append(m);//add this pointer to the menus list
+}
+
+void MainWindow::initProfilesMenu(){
+    //create example layout for profile list, placeholder buttons for now
+    QVBoxLayout *layout = new QVBoxLayout();
+    QComboBox *profileList = new QComboBox();
+
+    layout->addWidget(profileList);
+    layout->addStretch(1);//spacer between combo box and buttons
+
+    QPushButton* loginPButton = new QPushButton("Login");
+    connect(loginPButton, &QPushButton::clicked, this, &MainWindow::loginProfilePressed);
+    layout->addWidget(loginPButton);
+
+    QPushButton* addPButton = new QPushButton("add Profile");
+    connect(addPButton, &QPushButton::clicked, this, &MainWindow::createProfilePressed);
+    layout->addWidget(addPButton);
+
+    QPushButton* deletePButton = new QPushButton("delete Profile");
+    connect(deletePButton, &QPushButton::clicked, this, &MainWindow::removeProfilePressed);
+    layout->addWidget(deletePButton);
+
+    addMenu("Profile Menu", nullptr, layout);
+}
+
+void MainWindow::initAddProfileMenu(){
+    //create layout for profile creation menu
+    QVBoxLayout *layout = new QVBoxLayout();
+
+    QLabel *label = new QLabel("First Name");
+    layout->addWidget(label);
+    QLineEdit *textField = new QLineEdit();
+    textField->setPlaceholderText("Enter first name");
+    layout->addWidget(textField);
+
+    label = new QLabel("Last Name");
+    layout->addWidget(label);
+    textField = new QLineEdit();
+    textField->setPlaceholderText("Enter last name");
+    layout->addWidget(textField);
+
+    label = new QLabel("Weight");
+    layout->addWidget(label);
+    QSpinBox *spinBox = new QSpinBox();
+    layout->addWidget(spinBox);
+
+    label = new QLabel("Height");
+    layout->addWidget(label);
+    spinBox = new QSpinBox();
+    layout->addWidget(spinBox);
+
+    label = new QLabel("Date of Birth");
+    layout->addWidget(label);
+    QDateEdit *dobSpinBox = new QDateEdit();
+    layout->addWidget(dobSpinBox);
+
+    label = new QLabel("Country");
+    layout->addWidget(label);
+    textField = new QLineEdit();
+    textField->setPlaceholderText("Enter country");
+    layout->addWidget(textField);
+
+    label = new QLabel("Phone");
+    layout->addWidget(label);
+    textField = new QLineEdit();
+    textField->setPlaceholderText("Enter phone number");
+    layout->addWidget(textField);
+
+    label = new QLabel("Email");
+    layout->addWidget(label);
+    textField = new QLineEdit();
+    textField->setPlaceholderText("Enter email");
+    layout->addWidget(textField);
+
+    label = new QLabel("Password");
+    layout->addWidget(label);
+    textField = new QLineEdit();
+    textField->setPlaceholderText("Enter password");
+    layout->addWidget(textField);
+
+    QPushButton *addButton = new QPushButton("Add Profile");
+    layout->addWidget(addButton);
+
+    layout->addStretch(1);//spacer
+    addMenu("Create Profile", menus[0], layout);
+    menus[0]->addSubMenu(menus[1]);
+}
+
+void MainWindow::createProfilePressed(){
+    qInfo() << "handle profile creation screen";
+}
+
+void MainWindow::removeProfilePressed(){
+    qInfo() << "handle deleting profile";
+}
+
+void MainWindow::loginProfilePressed(){
+    qInfo() << "handle moving to app main menu";
 }
