@@ -11,11 +11,12 @@ class Menu : public QObject{
     public:
         explicit Menu(const QString &name, Menu *parent);
 
+        void addSubMenu(Menu* m);
+
     private:
         QString name;//current menu name
         Menu* parent;//pointer to parent;
         QVector<Menu*> subMenus;//pointers to subMenus
-        QVector<QObject> widgets;//store a list of objects
         QLayout *layout;//pointer to a layout
     signals:
 
