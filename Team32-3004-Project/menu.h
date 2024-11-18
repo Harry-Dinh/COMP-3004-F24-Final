@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QString>
-#include <QGraphicsScene>
+#include <QLayout>
 
 class Menu : public QObject{
     Q_OBJECT
@@ -16,7 +16,7 @@ class Menu : public QObject{
         Menu* parent;//pointer to parent;
         QVector<Menu*> subMenus;//pointers to subMenus
         QVector<QObject> widgets;//store a list of objects
-        QGraphicsScene *scene;//store
+        QLayout *layout;//pointer to a layout
     signals:
 
 };
