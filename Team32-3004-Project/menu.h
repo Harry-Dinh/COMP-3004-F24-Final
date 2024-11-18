@@ -15,6 +15,7 @@ class Menu : public QObject{
         void addLayout(QLayout* l);//add a pointer to a defined layout to this menu
 
         QLayout* getLayout();//returns this menu's layout
+        QString getName();//return this menu's name
     private:
         QString name;//current menu name
         Menu* parent;//pointer to parent;

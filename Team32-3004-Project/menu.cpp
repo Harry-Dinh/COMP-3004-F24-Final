@@ -16,3 +16,7 @@ void Menu::addLayout(QLayout* l){
 QLayout* Menu::getLayout(){
     return this->layout;
 }
+
+QString Menu::getName(){
+    return this->name;
+}

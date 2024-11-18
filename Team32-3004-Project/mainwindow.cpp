@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     addMenu("Profile Menu", nullptr, layout);//create this menu with layout from above
 
+    ui->menuLabel->setText(menus[0]->getName());
     ui->MenuWidget->setLayout(menus[0]->getLayout());
 }
 
