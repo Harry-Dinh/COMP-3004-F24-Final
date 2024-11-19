@@ -19,11 +19,16 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
+
+    historydb = new history();
+    historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
+
 }
 
 MainWindow::~MainWindow() {
     delete ui;
     delete this->batteryTimer;
+    delete historydb;
 }
 
 void MainWindow::drainBattery() {
