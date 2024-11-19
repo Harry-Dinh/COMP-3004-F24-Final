@@ -12,15 +12,16 @@ class Menu : public QObject{
         explicit Menu(const QString &name, Menu *parent);
 
         void addSubMenu(Menu* m);//add pointer to a submenu to this menu
-        void addLayout(QLayout* l);//add a pointer to a defined layout to this menu
-
-        QLayout* getLayout();//returns this menu's layout
         QString getName();//return this menu's name
+        Menu* getParent();
+        int getIndex();
+        void setIndex(int i);
+
     private:
         QString name;//current menu name
         Menu* parent;//pointer to parent;
         QVector<Menu*> subMenus;//pointers to subMenus
-        QLayout *layout;//pointer to a layout
+        int menuIndex;
     signals:
 
 };

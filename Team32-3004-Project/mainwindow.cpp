@@ -29,19 +29,24 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 
 
-    //create new profile
-    addProfile(0,"first","last",70,200, "20000110","Canda","12345678980", "email@email.com","password");
 
 
+    connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
 
-    initProfilesMenu();
-    initAddProfileMenu();
+    //create menus
+
+    addMenu("Profile Menu", nullptr, 0);
+    connect(ui->addProfileButton, &QPushButton::clicked, this, &MainWindow::createProfilePagePressed);
+    connect(ui->deleteProfileButton, &QPushButton::clicked, this, &MainWindow::deleteProfilePressed);
+    connect(ui->loginButton, &QPushButton::clicked, this, &MainWindow::loginProfilePressed);
+
+    addMenu("Create Profile", menus[0], 1);
+    menus[0]->addSubMenu(menus[1]);
 
 
     currMenu = menus[0];
-    ui->menuLabel->setText(currMenu->getName());
-    ui->MenuWidget->setLayout(currMenu->getLayout());
 
+    ui->MenuWidget->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow() {
@@ -83,6 +88,13 @@ void MainWindow::powerButtonPressed() {
     }
 }
 
+void MainWindow::backButtonPressed(){
+    if(currMenu->getParent() != nullptr){
+        ui->MenuWidget->setCurrentIndex(currMenu->getParent()->getIndex());
+        currMenu = menus[currMenu->getParent()->getIndex()];
+    }
+}
+
 void MainWindow::addProfile(int id, const QString &firstName, const QString &lastName,
                             int weight, int height, const QString &DOB, const QString &country,
                             const QString &phone, const QString &email, const QString &password){
@@ -97,106 +109,27 @@ void MainWindow::deleteProfile(int id){
     profiles.erase(profiles.begin()+id);//delete profile at id;
 }
 
-void MainWindow::addMenu(const QString &name, Menu* parent, QLayout *layout){
+void MainWindow::addMenu(const QString &name, Menu* parent, int index){
     Menu *m = new Menu(name, parent);
-    m->addLayout(layout);//point menu's layout to passed in layout
+    m->setIndex(index);
     menus.append(m);//add this pointer to the menus list
 }
 
-void MainWindow::initProfilesMenu(){
-    //create example layout for profile list, placeholder buttons for now
-    QVBoxLayout *layout = new QVBoxLayout();
-    QComboBox *profileList = new QComboBox();
-
-    layout->addWidget(profileList);
-    layout->addStretch(1);//spacer between combo box and buttons
-
-    QPushButton* loginPButton = new QPushButton("Login");
-    connect(loginPButton, &QPushButton::clicked, this, &MainWindow::loginProfilePressed);
-    layout->addWidget(loginPButton);
-
-    QPushButton* addPButton = new QPushButton("add Profile");
-    connect(addPButton, &QPushButton::clicked, this, &MainWindow::createProfilePressed);
-    layout->addWidget(addPButton);
-
-    QPushButton* deletePButton = new QPushButton("delete Profile");
-    connect(deletePButton, &QPushButton::clicked, this, &MainWindow::removeProfilePressed);
-    layout->addWidget(deletePButton);
-
-    addMenu("Profile Menu", nullptr, layout);
-}
-
-void MainWindow::initAddProfileMenu(){
-    //create layout for profile creation menu
-    QVBoxLayout *layout = new QVBoxLayout();
-
-    QLabel *label = new QLabel("First Name");
-    layout->addWidget(label);
-    QLineEdit *textField = new QLineEdit();
-    textField->setPlaceholderText("Enter first name");
-    layout->addWidget(textField);
-
-    label = new QLabel("Last Name");
-    layout->addWidget(label);
-    textField = new QLineEdit();
-    textField->setPlaceholderText("Enter last name");
-    layout->addWidget(textField);
-
-    label = new QLabel("Weight");
-    layout->addWidget(label);
-    QSpinBox *spinBox = new QSpinBox();
-    layout->addWidget(spinBox);
-
-    label = new QLabel("Height");
-    layout->addWidget(label);
-    spinBox = new QSpinBox();
-    layout->addWidget(spinBox);
-
-    label = new QLabel("Date of Birth");
-    layout->addWidget(label);
-    QDateEdit *dobSpinBox = new QDateEdit();
-    layout->addWidget(dobSpinBox);
-
-    label = new QLabel("Country");
-    layout->addWidget(label);
-    textField = new QLineEdit();
-    textField->setPlaceholderText("Enter country");
-    layout->addWidget(textField);
-
-    label = new QLabel("Phone");
-    layout->addWidget(label);
-    textField = new QLineEdit();
-    textField->setPlaceholderText("Enter phone number");
-    layout->addWidget(textField);
-
-    label = new QLabel("Email");
-    layout->addWidget(label);
-    textField = new QLineEdit();
-    textField->setPlaceholderText("Enter email");
-    layout->addWidget(textField);
-
-    label = new QLabel("Password");
-    layout->addWidget(label);
-    textField = new QLineEdit();
-    textField->setPlaceholderText("Enter password");
-    layout->addWidget(textField);
-
-    QPushButton *addButton = new QPushButton("Add Profile");
-    layout->addWidget(addButton);
-
-    layout->addStretch(1);//spacer
-    addMenu("Create Profile", menus[0], layout);
-    menus[0]->addSubMenu(menus[1]);
-}
-
-void MainWindow::createProfilePressed(){
+void MainWindow::createProfilePagePressed(){
     qInfo() << "handle profile creation screen";
+    ui->MenuWidget->setCurrentIndex(1);
+    currMenu = menus[1];
 }
 
-void MainWindow::removeProfilePressed(){
+void MainWindow::deleteProfilePressed(){
     qInfo() << "handle deleting profile";
 }
 
 void MainWindow::loginProfilePressed(){
     qInfo() << "handle moving to app main menu";
+}
+
+void MainWindow::createProfile(){
+        //create new profile
+        addProfile(0,"first","last",70,200, "20000110","Canda","12345678980", "email@email.com","password");
 }

@@ -9,14 +9,18 @@ void Menu::addSubMenu(Menu* m){
     this->subMenus.append(m);
 }
 
-void Menu::addLayout(QLayout* l){
-    this->layout = l;
-}
-
-QLayout* Menu::getLayout(){
-    return this->layout;
-}
-
 QString Menu::getName(){
     return this->name;
+}
+
+Menu* Menu::getParent(){
+    return this->parent;
+}
+
+int Menu::getIndex(){
+    return this->menuIndex;
+}
+
+void Menu::setIndex(int i){
+    this->menuIndex = i;
 }

@@ -17,21 +17,19 @@ class MainWindow : public QMainWindow {
     public:
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
-        void addMenu(const QString &name, Menu* parent, QLayout *layout);
+        void addMenu(const QString &name, Menu* parent, int index);
         void addProfile(int id, const QString &firstName, const QString &lastName,
                         int weight, int height, const QString &DOB, const QString &country,
                         const QString &phone, const QString &email, const QString &password);
         void deleteProfile(int id);
-
-        //menu initialization
-        void initProfilesMenu();
-        void initAddProfileMenu();
     public slots:
         void drainBattery();
         void powerButtonPressed();
-        void createProfilePressed();
-        void removeProfilePressed();
+        void backButtonPressed();
+        void createProfilePagePressed();
+        void deleteProfilePressed();
         void loginProfilePressed();
+        void createProfile();
     private:
         Ui::MainWindow *ui;
         QTimer* batteryTimer;
