@@ -38,5 +38,6 @@ class MainWindow : public QMainWindow {
         QVector<Menu*> menus;
         Menu *currMenu;//pointer to the current menu to display
         int selectedProfile;
+        int numProfiles;
 };
 #endif // MAINWINDOW_H

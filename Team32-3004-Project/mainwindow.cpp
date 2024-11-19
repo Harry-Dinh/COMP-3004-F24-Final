@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->batteryTimer = new QTimer();
     this->batteryPercentage = STARTING_BATTERY_LEVEL;
     this->selectedProfile = -1;
+    this->numProfiles = 0;
     
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
@@ -32,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
 
     connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
+    connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
 
     //create menus
 
@@ -130,6 +132,24 @@ void MainWindow::loginProfilePressed(){
 }
 
 void MainWindow::createProfile(){
-        //create new profile
-        addProfile(0,"first","last",70,200, "20000110","Canda","12345678980", "email@email.com","password");
+    qInfo() << "Create new profile";
+
+    if(numProfiles < 5){
+        QString firstName = ui->fNameTextBox->toPlainText();
+        QString lastName = ui->lNameTextBox->toPlainText();
+        int weight = ui->weightSpinBox->value();
+        int height = ui->heightSpinBox->value();
+        QString dob = ui->dobDateEdit->date().toString("dd/MM/yyyy");
+        QString country = ui->countryTextBox->toPlainText();
+        QString phone = ui->phoneTextBox->toPlainText();
+        QString email = ui->emailTextBox->toPlainText();
+        QString password = ui->passwordTextBox->toPlainText();//dont store passwords in plaintext
+        addProfile(numProfiles,firstName,lastName,weight,height,dob,country,phone,email,password);
+        ui->profileComboBox->addItem(firstName);
+        numProfiles++;
+    }
+    //return to profiles page
+    ui->MenuWidget->setCurrentIndex(0);
+    currMenu = menus[0];
+
 }
