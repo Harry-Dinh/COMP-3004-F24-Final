@@ -12,16 +12,14 @@ SOURCES += \
     defs.cpp \
     main.cpp \
     mainwindow.cpp \
-    measurement.cpp \
-    measurementsummary.cpp \
-    profile.cpp
+    profile.cpp \
+    scan.cpp
 
 HEADERS += \
     mainwindow.h \
-    measurement.h \
-    measurementsummary.h \
     profile.h \
-    defs.h
+    defs.h \
+    scan.h
 
 FORMS += \
     mainwindow.ui
