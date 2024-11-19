@@ -30,7 +30,11 @@ class MainWindow : public QMainWindow {
         void deleteProfilePressed();
         void loginProfilePressed();
         void createProfile();
-    private:
+
+    private slots:
+        void on_profileComboBox_currentIndexChanged(int index);
+
+private:
         Ui::MainWindow *ui;
         QTimer* batteryTimer;
         int batteryPercentage;

@@ -124,7 +124,11 @@ void MainWindow::createProfilePagePressed(){
 }
 
 void MainWindow::deleteProfilePressed(){
-    qInfo() << "handle deleting profile";
+    qInfo() << "handle deleting profile " << selectedProfile;
+    if(profiles.size() != 0){
+        profiles.erase(profiles.begin()+selectedProfile);
+        ui->profileComboBox->removeItem(selectedProfile);
+    }
 }
 
 void MainWindow::loginProfilePressed(){
@@ -153,3 +157,9 @@ void MainWindow::createProfile(){
     currMenu = menus[0];
 
 }
+
+void MainWindow::on_profileComboBox_currentIndexChanged(int index){
+    qInfo() << "selected profile " << index;
+    this->selectedProfile = index;
+}
+
