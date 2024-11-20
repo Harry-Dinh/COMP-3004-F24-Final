@@ -13,12 +13,14 @@ SOURCES += \
     history.cpp \
     main.cpp \
     mainwindow.cpp \
+    menu.cpp \
     profile.cpp \
     scan.cpp
 
 HEADERS += \
     history.h \
     mainwindow.h \
+    menu.h \
     profile.h \
     defs.h \
     scan.h
