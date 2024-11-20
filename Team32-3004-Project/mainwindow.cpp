@@ -35,16 +35,19 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
     connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
 
-    //create menus
-
+    //create profile menu, index 0
     addMenu("Profile Menu", nullptr, 0);
     connect(ui->addProfileButton, &QPushButton::clicked, this, &MainWindow::createProfilePagePressed);
     connect(ui->deleteProfileButton, &QPushButton::clicked, this, &MainWindow::deleteProfilePressed);
     connect(ui->loginButton, &QPushButton::clicked, this, &MainWindow::loginProfilePressed);
 
+    //create profile creation menu, index 1
     addMenu("Create Profile", menus[0], 1);
     menus[0]->addSubMenu(menus[1]);
 
+    //create main menu, index 2
+    addMenu("Main Menu", menus[0], 2);
+    menus[0]->addSubMenu(menus[2]);
 
     currMenu = menus[0];
 
@@ -133,6 +136,10 @@ void MainWindow::deleteProfilePressed(){
 
 void MainWindow::loginProfilePressed(){
     qInfo() << "handle moving to app main menu";
+    if(selectedProfile != -1){//a profile is selected
+        ui->MenuWidget->setCurrentIndex(2);
+        currMenu = menus[2];
+    }
 }
 
 void MainWindow::createProfile(){
