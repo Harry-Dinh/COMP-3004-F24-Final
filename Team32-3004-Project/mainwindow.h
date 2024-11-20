@@ -5,6 +5,8 @@
 #include <QTimer>
 #include "profile.h"
 #include "menu.h"
+#include "history.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -43,5 +45,6 @@ private:
         Menu *currMenu;//pointer to the current menu to display
         int selectedProfile;
         int numProfiles;
+        history* historydb;
 };
 #endif // MAINWINDOW_H

@@ -29,9 +29,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 
-
-
-
     connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
     connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
 
@@ -52,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     currMenu = menus[0];
 
     ui->MenuWidget->setCurrentIndex(0);
+  
+    historydb = new history();
+//     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
 }
 
 MainWindow::~MainWindow() {
@@ -69,6 +69,7 @@ MainWindow::~MainWindow() {
         delete menus.back();
         menus.pop_back();
     }
+    delete historydb;
 }
 
 void MainWindow::drainBattery() {
@@ -169,4 +170,3 @@ void MainWindow::on_profileComboBox_currentIndexChanged(int index){
     qInfo() << "selected profile " << index;
     this->selectedProfile = index;
 }
-
