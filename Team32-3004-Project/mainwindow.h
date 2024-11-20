@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include "history.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,5 +26,6 @@ class MainWindow : public QMainWindow {
         Ui::MainWindow *ui;
         QTimer* batteryTimer;
         int batteryPercentage;
+        history* historydb;
 };
 #endif // MAINWINDOW_H

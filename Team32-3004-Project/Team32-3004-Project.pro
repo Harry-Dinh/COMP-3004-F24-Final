@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,12 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     defs.cpp \
+    history.cpp \
     main.cpp \
     mainwindow.cpp \
     profile.cpp \
     scan.cpp
 
 HEADERS += \
+    history.h \
     mainwindow.h \
     profile.h \
     defs.h \
