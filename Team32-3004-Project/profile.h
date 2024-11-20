@@ -9,9 +9,7 @@
 class Profile : public QObject{
     Q_OBJECT
     public:
-        Profile(int id, const QString &firstName, const QString &lastName,
-                int weight, int height, const QDate &DOB, QString &country,
-                QString &phone, QString &email, QString &password);
+        Profile(int id, const QString &firstName, const QString &lastName, int weight, int height, const QDate &DOB,const QString &country,const QString &phone,const QString &email,const QString &password);
     private:
         int id;//user's id
         QString firstName;//stores first name of user
