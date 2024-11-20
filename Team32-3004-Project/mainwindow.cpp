@@ -40,11 +40,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     //create profile creation menu, index 1
     addMenu("Create Profile", menus[0], 1);
-    menus[0]->addSubMenu(menus[1]);
 
     //create main menu, index 2
     addMenu("Main Menu", menus[0], 2);
-    menus[0]->addSubMenu(menus[2]);
 
     currMenu = menus[0];
 
@@ -119,6 +117,9 @@ void MainWindow::addMenu(const QString &name, Menu* parent, int index){
     Menu *m = new Menu(name, parent);
     m->setIndex(index);
     menus.append(m);//add this pointer to the menus list
+    if(parent != nullptr){
+        parent->addSubMenu(m);
+    }
 }
 
 void MainWindow::createProfilePagePressed(){
