@@ -1,4 +1,11 @@
 #include <iostream>
+#include <QDebug>
+#include <QComboBox>
+#include <QLayout>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QDateEdit>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "defs.h"
@@ -10,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
     this->batteryTimer = new QTimer();
     this->batteryPercentage = STARTING_BATTERY_LEVEL;
+    this->selectedProfile = -1;
+    this->numProfiles = 0;
     
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
@@ -20,14 +29,46 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 
-    historydb = new history();
-    historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
+    connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
+    connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
 
+    //create profile menu, index 0
+    addMenu("Profile Menu", nullptr, 0);
+    connect(ui->addProfileButton, &QPushButton::clicked, this, &MainWindow::createProfilePagePressed);
+    connect(ui->deleteProfileButton, &QPushButton::clicked, this, &MainWindow::deleteProfilePressed);
+    connect(ui->loginButton, &QPushButton::clicked, this, &MainWindow::loginProfilePressed);
+
+    //create profile creation menu, index 1
+    addMenu("Create Profile", menus[0], 1);
+    menus[0]->addSubMenu(menus[1]);
+
+    //create main menu, index 2
+    addMenu("Main Menu", menus[0], 2);
+    menus[0]->addSubMenu(menus[2]);
+
+    currMenu = menus[0];
+
+    ui->MenuWidget->setCurrentIndex(0);
+  
+    historydb = new history();
+//     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
 }
 
 MainWindow::~MainWindow() {
     delete ui;
     delete this->batteryTimer;
+
+    //delete all profiles
+    while(!profiles.empty()){
+        delete profiles.back();
+        profiles.pop_back();
+    }
+
+    //delete all menus
+    while(!menus.empty()){
+        delete menus.back();
+        menus.pop_back();
+    }
     delete historydb;
 }
 
@@ -51,4 +92,81 @@ void MainWindow::powerButtonPressed() {
         ui->powerButton->setText("Power On");
         batteryTimer->stop();           // Simulate the action of turning off the device when the power button is pressed again
     }
+}
+
+void MainWindow::backButtonPressed(){
+    if(currMenu->getParent() != nullptr){
+        ui->MenuWidget->setCurrentIndex(currMenu->getParent()->getIndex());
+        currMenu = menus[currMenu->getParent()->getIndex()];
+    }
+}
+
+void MainWindow::addProfile(int id, const QString &firstName, const QString &lastName,
+                            int weight, int height, const QString &DOB, const QString &country,
+                            const QString &phone, const QString &email, const QString &password){
+
+    Profile *p = new Profile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
+    profiles.append(p);
+    qInfo() << "profile added";
+}
+
+void MainWindow::deleteProfile(int id){
+    delete profiles[id];//deallocate profile with id
+    profiles.erase(profiles.begin()+id);//delete profile at id;
+}
+
+void MainWindow::addMenu(const QString &name, Menu* parent, int index){
+    Menu *m = new Menu(name, parent);
+    m->setIndex(index);
+    menus.append(m);//add this pointer to the menus list
+}
+
+void MainWindow::createProfilePagePressed(){
+    qInfo() << "handle profile creation screen";
+    ui->MenuWidget->setCurrentIndex(1);
+    currMenu = menus[1];
+}
+
+void MainWindow::deleteProfilePressed(){
+    qInfo() << "handle deleting profile " << selectedProfile;
+    if(profiles.size() != 0){
+        profiles.erase(profiles.begin()+selectedProfile);
+        ui->profileComboBox->removeItem(selectedProfile);
+    }
+}
+
+void MainWindow::loginProfilePressed(){
+    qInfo() << "handle moving to app main menu";
+    if(selectedProfile != -1){//a profile is selected
+        ui->MenuWidget->setCurrentIndex(2);
+        currMenu = menus[2];
+    }
+}
+
+void MainWindow::createProfile(){
+    qInfo() << "Create new profile";
+
+    if(numProfiles < 5){
+        QString firstName = ui->fNameTextBox->toPlainText();
+        QString lastName = ui->lNameTextBox->toPlainText();
+        int weight = ui->weightSpinBox->value();
+        int height = ui->heightSpinBox->value();
+        QString dob = ui->dobDateEdit->date().toString("dd/MM/yyyy");
+        QString country = ui->countryTextBox->toPlainText();
+        QString phone = ui->phoneTextBox->toPlainText();
+        QString email = ui->emailTextBox->toPlainText();
+        QString password = ui->passwordTextBox->toPlainText();//dont store passwords in plaintext
+        addProfile(numProfiles,firstName,lastName,weight,height,dob,country,phone,email,password);
+        ui->profileComboBox->addItem(firstName);
+        numProfiles++;
+    }
+    //return to profiles page
+    ui->MenuWidget->setCurrentIndex(0);
+    currMenu = menus[0];
+
+}
+
+void MainWindow::on_profileComboBox_currentIndexChanged(int index){
+    qInfo() << "selected profile " << index;
+    this->selectedProfile = index;
 }
