@@ -12,6 +12,7 @@ class Measurement {
         
     public:
         Measurement(Meridian meridian);
+        Measurement(Meridian meridian, double left, double right);
         
         Meridian getMeridian();
         double getAvgValue() const;

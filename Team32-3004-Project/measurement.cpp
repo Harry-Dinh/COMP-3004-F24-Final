@@ -19,6 +19,12 @@ Measurement::Measurement(Meridian meridian) {
     // Calculate the average value
     this->avgValue = (double) ((leftValue + rightValue) / 2);
 }
+Measurement::Measurement(Meridian meridian, double left, double right){
+    this->meridian = meridian;
+    this->leftValue = left;
+    this->rightValue = right;
+    this->avgValue = (double) ((leftValue + rightValue) / 2);
+}
 
 Meridian Measurement::getMeridian() {
     return this->meridian;
