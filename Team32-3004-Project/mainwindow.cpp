@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->startMeasureButton, &QPushButton::clicked, this, &MainWindow::measureMenuPressed);
     connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
 
+    connect(ui->probeButton, &QPushButton::clicked, this, &MainWindow::probePressed);
+
     //create profile menu, index 0
     addMenu("Profile Menu", nullptr, 0);
     connect(ui->addProfileButton, &QPushButton::clicked, this, &MainWindow::createProfilePagePressed);
@@ -193,6 +195,11 @@ void MainWindow::changePage(int index){
     ui->MenuWidget->setCurrentIndex(index);
     currMenu = menus[index];
     ui->pageTitle->setText(menus[index]->getName());
+}
+
+void probePressed(){
+    //generate value in range of 0 - 200 microamps?
+//    int randomVal =rand() %201;
 }
 
 void MainWindow::loadHistory(){

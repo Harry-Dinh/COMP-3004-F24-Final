@@ -37,7 +37,7 @@ class MainWindow : public QMainWindow {
         void loginProfilePressed();
         void measureMenuPressed();
         void historyMenuPressed();
-
+        void probePressed();
         void createProfile();
 
 
@@ -54,5 +54,6 @@ private:
         int selectedProfile;
         int numProfiles;
         history* historydb;
+        QVector<int> currMeasurements;
 };
 #endif // MAINWINDOW_H
