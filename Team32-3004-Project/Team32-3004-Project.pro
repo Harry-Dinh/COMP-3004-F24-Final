@@ -13,6 +13,7 @@ SOURCES += \
     history.cpp \
     main.cpp \
     mainwindow.cpp \
+    measurement.cpp \
     menu.cpp \
     profile.cpp \
     scan.cpp
@@ -20,6 +21,7 @@ SOURCES += \
 HEADERS += \
     history.h \
     mainwindow.h \
+    measurement.h \
     menu.h \
     profile.h \
     defs.h \
