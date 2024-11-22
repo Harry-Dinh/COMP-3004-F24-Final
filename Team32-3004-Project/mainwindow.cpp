@@ -114,6 +114,12 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
     qInfo() << "profile added";
 }
 
+void MainWindow::loadProfile(){
+//    for(int i = 0; i < numProfiles; ++i){
+//        addProfile(historydb->getProfile(i));
+//    }
+}
+
 void MainWindow::deleteProfile(int id){
     delete profiles[id];//deallocate profile with id
     profiles.erase(profiles.begin()+id);//delete profile at id;
@@ -147,8 +153,6 @@ void MainWindow::loginProfilePressed(){
         changePage(2);
     }
 }
-
-
 
 void MainWindow::createProfile(){
     qInfo() << "Create new profile";
@@ -189,4 +193,19 @@ void MainWindow::changePage(int index){
     ui->MenuWidget->setCurrentIndex(index);
     currMenu = menus[index];
     ui->pageTitle->setText(menus[index]->getName());
+}
+
+void MainWindow::loadHistory(){
+    /*
+    //get history data associated with selectedID
+    for(int i = 0; i < vector.size(); ++i){
+        QWidget* hInfo = new QWidget();//widget for historical info
+        //add labels and other things to represent the data in UI
+
+
+
+        ui->tabWidget->addTab(hInfo,"history" + QString::number(1));
+    }
+
+    */
 }

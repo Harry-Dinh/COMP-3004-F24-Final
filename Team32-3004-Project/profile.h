@@ -6,12 +6,12 @@
 #include <QDate>
 #include <QVector>
 
-class Profile : public QObject{
-    Q_OBJECT
+class Profile{
     public:
         Profile(int id, const QString &firstName, const QString &lastName,
                 int weight, int height, const QString &DOB, const QString &country,
                 const QString &phone, const QString &email, const QString &password);
+        Profile(const Profile &p);
     private:
         int id;//user's id
         QString firstName;//stores first name of user
