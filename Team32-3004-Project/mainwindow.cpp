@@ -29,8 +29,11 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 
+    //connect ui navigation buttons
     connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
     connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
+    connect(ui->startMeasureButton, &QPushButton::clicked, this, &MainWindow::measureMenuPressed);
+    connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
 
     //create profile menu, index 0
     addMenu("Profile Menu", nullptr, 0);
@@ -44,10 +47,14 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     //create main menu, index 2
     addMenu("Main Menu", menus[0], 2);
 
-    currMenu = menus[0];
+    //create measurement menu, index 3
+    addMenu("Measure", menus[2], 3);
 
-    ui->MenuWidget->setCurrentIndex(0);
-  
+    //create history menu, index 4
+    addMenu("History", menus[2], 4);
+
+    changePage(0);
+
     historydb = new history();
 //     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
 }
@@ -94,8 +101,7 @@ void MainWindow::powerButtonPressed() {
 
 void MainWindow::backButtonPressed(){
     if(currMenu->getParent() != nullptr){
-        ui->MenuWidget->setCurrentIndex(currMenu->getParent()->getIndex());
-        currMenu = menus[currMenu->getParent()->getIndex()];
+        changePage(currMenu->getParent()->getIndex());
     }
 }
 
@@ -124,8 +130,7 @@ void MainWindow::addMenu(const QString &name, Menu* parent, int index){
 
 void MainWindow::createProfilePagePressed(){
     qInfo() << "handle profile creation screen";
-    ui->MenuWidget->setCurrentIndex(1);
-    currMenu = menus[1];
+    changePage(1);
 }
 
 void MainWindow::deleteProfilePressed(){
@@ -139,10 +144,11 @@ void MainWindow::deleteProfilePressed(){
 void MainWindow::loginProfilePressed(){
     qInfo() << "handle moving to app main menu";
     if(selectedProfile != -1){//a profile is selected
-        ui->MenuWidget->setCurrentIndex(2);
-        currMenu = menus[2];
+        changePage(2);
     }
 }
+
+
 
 void MainWindow::createProfile(){
     qInfo() << "Create new profile";
@@ -162,12 +168,25 @@ void MainWindow::createProfile(){
         numProfiles++;
     }
     //return to profiles page
-    ui->MenuWidget->setCurrentIndex(0);
-    currMenu = menus[0];
+    changePage(0);
 
+}
+
+void MainWindow::measureMenuPressed(){
+    changePage(3);
+}
+
+void MainWindow::historyMenuPressed(){
+    changePage(4);
 }
 
 void MainWindow::on_profileComboBox_currentIndexChanged(int index){
     qInfo() << "selected profile " << index;
     this->selectedProfile = index;
+}
+
+void MainWindow::changePage(int index){
+    ui->MenuWidget->setCurrentIndex(index);
+    currMenu = menus[index];
+    ui->pageTitle->setText(menus[index]->getName());
 }

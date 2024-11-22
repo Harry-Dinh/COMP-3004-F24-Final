@@ -24,6 +24,7 @@ class MainWindow : public QMainWindow {
                         int weight, int height, const QString &DOB, const QString &country,
                         const QString &phone, const QString &email, const QString &password);
         void deleteProfile(int id);
+        void changePage(int index);
     public slots:
         void drainBattery();
         void powerButtonPressed();
@@ -31,7 +32,11 @@ class MainWindow : public QMainWindow {
         void createProfilePagePressed();
         void deleteProfilePressed();
         void loginProfilePressed();
+        void measureMenuPressed();
+        void historyMenuPressed();
+
         void createProfile();
+
 
     private slots:
         void on_profileComboBox_currentIndexChanged(int index);
