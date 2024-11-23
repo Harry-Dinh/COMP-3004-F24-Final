@@ -1,22 +1,91 @@
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
 
-#include "defs.h"
+#include <QString>
+#include <QDateTime>
+#include <vector>
 
+using namespace std;
+
+/**
+ * @brief A class containing the data for one measurement that stores the values of the 24 meridian points on the body, as well as the ID of the user who took the measurement and the time that was taken.
+ */
 class Measurement {
     private:
-        Meridian meridian;
-        double leftValue;
-        double rightValue;
-        double avgValue;
+        /// @brief References the user taking this measurement
+        int userID;
+        
+        /// @brief The date/time that this measurement was created
+        QString timeRecorded;
+        
+        /// @brief An array storing 24 meridian values
+        vector<double> meridianValues;
         
     public:
-        Measurement(Meridian meridian);
         
-        Meridian getMeridian();
-        double getAvgValue() const;
-        double getLValue() const;
-        double getRValue() const;
+        // CONSTRUCTORS
+        
+        /// @brief Creation constructor, **Use this for creating a new measurement.**
+        Measurement(int userID, QDateTime& timeRecorded);
+        
+        /// @brief Exisitng constructor, **Use this to load existing data into memory**, like loading history data.
+        Measurement(int userID, QDateTime& timeRecorded, vector<double>& meridianValues);
+        
+        // GETTERS
+        
+        /**
+         * @brief Return the user ID
+         */
+        int getUserID() const;
+        
+        /**
+         * @brief Return the time recorded in `QString` form
+         */
+        QString getTimeRecorded();
+        
+        /**
+         * @brief Return the entire array of meridian values
+         */
+        vector<double>& getValues();
+        
+        /**
+         * @brief Return a single meridian value inside the array.
+         * @param index the index to look for in the array
+         * @return This function returns -1 if the provided index is out of bounds or the array is empty. Otherwise, it will return the value at the specified index.
+         */
+        double getValue(int index) const;
+        
+        // SETTERS
+        
+        /**
+         * @brief Setter for the user ID
+         * @param userID the new ID to assign
+         */
+        void setUserID(int userID);
+        
+        /**
+         * @brief Setter for the time recorded
+         * @param timeRecorded the new `QDateTime` object to record the time, then converted to `QString` before assigning
+         */
+        void setTimeRecorded(QDateTime& timeRecorded);
+        
+        /**
+         * @brief Setter for the meridian array
+         * @param src The data source to assign
+         */
+        void setArray(vector<double>& src);
+        
+        /**
+         * @brief Add an existing value to the meridian array
+         * @param existingValue the existing value to add
+         */
+        void addExistingValue(double existingValue);
+        
+        /**
+         * @brief Generate a random number then add it to the back of the array
+         * **This function should be called whenever the user presses the measure button!**
+         */
+        void generateValue();
 };
 
 #endif // MEASUREMENT_H
