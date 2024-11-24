@@ -10,6 +10,8 @@ using namespace std;
 #define RYODORAKU_MIN_BOUND 5               // The lowest electrical current that can flow through the human body
 #define RYODORAKU_MAX_BOUND 160             // The highest electrical current that can flow through the human body
 #define HEALTH_CAT_COUNT 5                  // The number of health categories displayed on the summary screen
+#define HEALTHY_UPPER_BOUND 70              // The upper bound for comparing health meridian values
+#define HEALTHY_LOWER_BOUND 50              // The lower bound for comparing health meridian values
 
 // MARK: HEALTH CATEGORY
 
