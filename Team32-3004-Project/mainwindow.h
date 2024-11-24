@@ -23,7 +23,11 @@ class MainWindow : public QMainWindow {
         void addProfile(int id, const QString &firstName, const QString &lastName,
                         int weight, int height, const QString &DOB, const QString &country,
                         const QString &phone, const QString &email, const QString &password);
+        void loadProfile();//load profile from the SQL database
+
         void deleteProfile(int id);
+        void changePage(int index);
+        void loadHistory();//load all historical data from the SQL database
     public slots:
         void drainBattery();
         void powerButtonPressed();
@@ -31,7 +35,11 @@ class MainWindow : public QMainWindow {
         void createProfilePagePressed();
         void deleteProfilePressed();
         void loginProfilePressed();
+        void measureMenuPressed();
+        void historyMenuPressed();
+        void probePressed();
         void createProfile();
+
 
     private slots:
         void on_profileComboBox_currentIndexChanged(int index);
@@ -46,5 +54,6 @@ private:
         int selectedProfile;
         int numProfiles;
         history* historydb;
+        QVector<int> currMeasurements;
 };
 #endif // MAINWINDOW_H
