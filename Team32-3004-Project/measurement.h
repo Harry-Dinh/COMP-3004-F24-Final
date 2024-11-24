@@ -22,11 +22,6 @@ class Measurement {
         vector<double> meridianValues;
         
     public:
-<<<<<<< HEAD
-        Measurement(Meridian meridian);
-        Measurement(Meridian meridian, double left, double right);
-=======
->>>>>>> main
         
         // CONSTRUCTORS
         

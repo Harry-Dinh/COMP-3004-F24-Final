@@ -61,39 +61,39 @@ bool history::addProfile(int pid, const QString& fname, const QString& lname, in
     return raDoTechDB.commit();
 }
 
-bool history::addHealth(Scan& scan){
+bool history::addHealth(Measurement& measurement){
     raDoTechDB.transaction();
-    vector<Measurement*>& measures = scan.getMeasurements(); //get list of measures from scan
+    vector<double>& measures = measurement.getValues(); //get list of measures from scan
 
     QSqlQuery query;
     //store left and right values from measures
     query.prepare("INSERT OR IGNORE INTO measurements (mId, date, m_1, m_2, m_3, m_4, m_5, m_6, m_7, m_8, m_9, m_10, m_11, m_12, m_13, m_14, m_15, m_16, m_17, m_18, m_19, m_20, m_21, m_22, m_23, m_24) VALUES (:mId, :date, :m_1, :m_2, :m_3, :m_4, :m_5, :m_6, :m_7, :m_8, :m_9, :m_10, :m_11, :m_12, :m_13, :m_14, :m_15, :m_16, :m_17, :m_18, :m_19, :m_20, :m_21, :m_22, :m_23, :m_24);");
-    query.bindValue(":mId", scan.getUserID());
-    query.bindValue(":date", scan.getTimeRecorded());
-    query.bindValue(":m_1", measures[0]->getLValue());
-    query.bindValue(":m_2", measures[0]->getRValue());
-    query.bindValue(":m_3", measures[1]->getLValue());
-    query.bindValue(":m_4", measures[1]->getRValue());
-    query.bindValue(":m_5", measures[2]->getLValue());
-    query.bindValue(":m_6", measures[2]->getRValue());
-    query.bindValue(":m_7", measures[3]->getLValue());
-    query.bindValue(":m_8", measures[3]->getRValue());
-    query.bindValue(":m_9", measures[4]->getLValue());
-    query.bindValue(":m_10", measures[4]->getRValue());
-    query.bindValue(":m_11", measures[5]->getLValue());
-    query.bindValue(":m_12", measures[5]->getRValue());
-    query.bindValue(":m_13", measures[6]->getLValue());
-    query.bindValue(":m_14", measures[6]->getRValue());
-    query.bindValue(":m_15", measures[7]->getLValue());
-    query.bindValue(":m_16", measures[7]->getRValue());
-    query.bindValue(":m_17", measures[8]->getLValue());
-    query.bindValue(":m_18", measures[8]->getRValue());
-    query.bindValue(":m_19", measures[9]->getLValue());
-    query.bindValue(":m_20", measures[9]->getRValue());
-    query.bindValue(":m_21", measures[10]->getLValue());
-    query.bindValue(":m_22", measures[10]->getRValue());
-    query.bindValue(":m_23", measures[11]->getLValue());
-    query.bindValue(":m_24", measures[11]->getRValue());
+    query.bindValue(":mId", measurement.getUserID());
+    query.bindValue(":date", measurement.getTimeRecorded());
+    query.bindValue(":m_1", measures[0]);
+    query.bindValue(":m_2", measures[1]);
+    query.bindValue(":m_3", measures[2]);
+    query.bindValue(":m_4", measures[3]);
+    query.bindValue(":m_5", measures[4]);
+    query.bindValue(":m_6", measures[5]);
+    query.bindValue(":m_7", measures[6]);
+    query.bindValue(":m_8", measures[7]);
+    query.bindValue(":m_9", measures[8]);
+    query.bindValue(":m_10", measures[9]);
+    query.bindValue(":m_11", measures[10]);
+    query.bindValue(":m_12", measures[11]);
+    query.bindValue(":m_13", measures[12]);
+    query.bindValue(":m_14", measures[13]);
+    query.bindValue(":m_15", measures[14]);
+    query.bindValue(":m_16", measures[15]);
+    query.bindValue(":m_17", measures[16]);
+    query.bindValue(":m_18", measures[17]);
+    query.bindValue(":m_19", measures[18]);
+    query.bindValue(":m_20", measures[19]);
+    query.bindValue(":m_21", measures[20]);
+    query.bindValue(":m_22", measures[21]);
+    query.bindValue(":m_23", measures[22]);
+    query.bindValue(":m_24", measures[23]);
 
     query.exec();
     return raDoTechDB.commit();
@@ -117,9 +117,9 @@ Profile history::getProfile(int id){
 
 }
 
-QVector<Scan*> history::getHealth(int id){
+QVector<Measurement> history::getHealth(int id){
     QSqlQuery query;
-    QVector<Scan*> healthHistory; //double check this one and how we are passign it.
+    QVector<Measurement> healthHistory; //double check this one and how we are passign it.
     raDoTechDB.transaction();
 
     query.prepare("SELECT * FROM measurements WHERE mId=:mid");
@@ -128,7 +128,7 @@ QVector<Scan*> history::getHealth(int id){
 
     while(query.next()){ // go through each entry and add a scan object for each.
         QDateTime scanTime = QDateTime::fromString(query.value(1).toString(),"yyyy-MM-dd hh:mm");
-        Scan scan = Scan(query.value(0).toInt(), scanTime); //scan object
+        Measurement scan = Measurement(query.value(0).toInt(), scanTime); //scan object
 
 
         /*
@@ -147,12 +147,11 @@ QVector<Scan*> history::getHealth(int id){
         */
 
 
-        for(int i = 1; i<13; i++){ // assign values to measurements and add them to the scan object
-            Measurement m = Measurement(intToMeridian(i), query.value(i*2).toDouble(), query.value(i*2+1).toDouble());
-            scan.addMeasurement(&m);
+        for(int i = 2; i<26; i++){ // assign values to measurements and add them to the scan object
+            scan.addExistingValue(query.value(i).toDouble());
         }
 
-        healthHistory.push_back( &scan );//add scan object to vector.
+        healthHistory.push_back( scan );//add scan object to vector.
     }
 
     return healthHistory;
