@@ -3,7 +3,7 @@
 **Note:** The project's spec is currently a "draft" according to the prof. Things might change in the future.
 
 ## Next Meeting
-Friday (Nov 22) at 7:15 PM
+Tuesday (Nov 26) @ 7:15 PM
 Discord Meeting
 
 ## Team Info
