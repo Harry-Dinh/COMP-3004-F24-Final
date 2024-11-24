@@ -1,57 +1,28 @@
 #ifndef SCAN_H
 #define SCAN_H
 
-#include <iostream>
-#include <vector>
-#include <QDateTime>
 #include "measurement.h"
 
-using namespace std;
-
-/// @brief An object representing one full scan with 24 measurements.
-/// @todo Create a vector of `Scan` object somewhere to hold things for the history
+/**
+ * @brief A class that is responsible for checking if its measurement object is within the 50-70 bound.
+ * @todo Since this class only houses a function, it might not worth keeping around. I'm still going to leave it here because of the function implementation. However, Asaad, since you're doing the data visualization, you should incorporate this function of mine into your Summary class then dispose of this Scan class.
+ */
 class Scan {
     private:
-        /// @brief The ID associated with the user profile that took this scan.
-        int userID;
+        Measurement* measurement;
         
-        /// @brief A collection of measurement values that are recorded each time the device is pressed against the body. There should be 24 of these values.
-        vector<Measurement*> measurements;
-        
-        /// @brief The baseline/average value of the measurements
-        double measurementBaseline;
-        
-        /// @brief The time that the scan was recorded in string form.
-        QString timeRecorded;
+    public:
+        Scan(Measurement* measurement);
         
         /**
-         * @brief The data that represent each of the health category (energy level, metabolism, immume system, psycho-emotional state and musculoskeletal system)
-         * The following are the associated meridian points to each health category
-         * - [0] Energy level: same as baseline value
-         * - [1] Metabolism: spleen, stomach, kidney
-         * - [2] Immune system: lung, large intestine
-         * - [3] Psyco-emotional state: heart, liver, heart constrictor
-         * - [4] Musculoskeletal system: bladder, gallbladder, stomach, liver, triple heater
+         * @brief Check if the provided value is within the pre-defined bound (check in defs.h)
+         * @param valueToCheck the value to check for
+         * @return
+         * -1 if lower than pre-defined bound
+         * 0 if within the pre-defined bound
+         * 1 if higher than the pre-defined bound
          */
-        vector<double> healthCategoriesData;
-    
-    public:
-        Scan(int userID, QDateTime& timeRecorded);
-        
-        // GETTERS AND SETTERS
-        
-        int getUserID() const;
-        Measurement* getMeasurement(int index) const;
-        vector<Measurement*>& getMeasurements();
-        QString& getTimeRecorded();
-        
-        // SCAN CLASS OPERATIONS
-        
-        double calculateBaseline();
-        void initBaseline();
-        Measurement* getMeasurementWith(Meridian meridian);
-        void addMeasurement(Measurement* measurement);
-        void initHealthCategoriesData();
+        int healthChecking(double valueToCheck);
 };
 
 #endif // SCAN_H

@@ -29,8 +29,13 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 
+    //connect ui navigation buttons
     connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
     connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
+    connect(ui->startMeasureButton, &QPushButton::clicked, this, &MainWindow::measureMenuPressed);
+    connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
+
+    connect(ui->probeButton, &QPushButton::clicked, this, &MainWindow::probePressed);
 
     //create profile menu, index 0
     addMenu("Profile Menu", nullptr, 0);
@@ -40,16 +45,18 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     //create profile creation menu, index 1
     addMenu("Create Profile", menus[0], 1);
-    menus[0]->addSubMenu(menus[1]);
 
     //create main menu, index 2
     addMenu("Main Menu", menus[0], 2);
-    menus[0]->addSubMenu(menus[2]);
 
-    currMenu = menus[0];
+    //create measurement menu, index 3
+    addMenu("Measure", menus[2], 3);
 
-    ui->MenuWidget->setCurrentIndex(0);
-  
+    //create history menu, index 4
+    addMenu("History", menus[2], 4);
+
+    changePage(0);
+
     historydb = new history();
 //     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
 }
@@ -96,8 +103,7 @@ void MainWindow::powerButtonPressed() {
 
 void MainWindow::backButtonPressed(){
     if(currMenu->getParent() != nullptr){
-        ui->MenuWidget->setCurrentIndex(currMenu->getParent()->getIndex());
-        currMenu = menus[currMenu->getParent()->getIndex()];
+        changePage(currMenu->getParent()->getIndex());
     }
 }
 
@@ -110,6 +116,12 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
     qInfo() << "profile added";
 }
 
+void MainWindow::loadProfile(){
+//    for(int i = 0; i < numProfiles; ++i){
+//        addProfile(historydb->getProfile(i));
+//    }
+}
+
 void MainWindow::deleteProfile(int id){
     delete profiles[id];//deallocate profile with id
     profiles.erase(profiles.begin()+id);//delete profile at id;
@@ -119,12 +131,14 @@ void MainWindow::addMenu(const QString &name, Menu* parent, int index){
     Menu *m = new Menu(name, parent);
     m->setIndex(index);
     menus.append(m);//add this pointer to the menus list
+    if(parent != nullptr){
+        parent->addSubMenu(m);
+    }
 }
 
 void MainWindow::createProfilePagePressed(){
     qInfo() << "handle profile creation screen";
-    ui->MenuWidget->setCurrentIndex(1);
-    currMenu = menus[1];
+    changePage(1);
 }
 
 void MainWindow::deleteProfilePressed(){
@@ -138,8 +152,7 @@ void MainWindow::deleteProfilePressed(){
 void MainWindow::loginProfilePressed(){
     qInfo() << "handle moving to app main menu";
     if(selectedProfile != -1){//a profile is selected
-        ui->MenuWidget->setCurrentIndex(2);
-        currMenu = menus[2];
+        changePage(2);
     }
 }
 
@@ -161,12 +174,45 @@ void MainWindow::createProfile(){
         numProfiles++;
     }
     //return to profiles page
-    ui->MenuWidget->setCurrentIndex(0);
-    currMenu = menus[0];
+    changePage(0);
 
+}
+
+void MainWindow::measureMenuPressed(){
+    changePage(3);
+}
+
+void MainWindow::historyMenuPressed(){
+    changePage(4);
 }
 
 void MainWindow::on_profileComboBox_currentIndexChanged(int index){
     qInfo() << "selected profile " << index;
     this->selectedProfile = index;
+}
+
+void MainWindow::changePage(int index){
+    ui->MenuWidget->setCurrentIndex(index);
+    currMenu = menus[index];
+    ui->pageTitle->setText(menus[index]->getName());
+}
+
+void probePressed(){
+    //generate value in range of 0 - 200 microamps?
+//    int randomVal =rand() %201;
+}
+
+void MainWindow::loadHistory(){
+    /*
+    //get history data associated with selectedID
+    for(int i = 0; i < vector.size(); ++i){
+        QWidget* hInfo = new QWidget();//widget for historical info
+        //add labels and other things to represent the data in UI
+
+
+
+        ui->tabWidget->addTab(hInfo,"history" + QString::number(1));
+    }
+
+    */
 }
