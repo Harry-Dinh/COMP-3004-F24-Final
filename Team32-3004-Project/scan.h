@@ -1,34 +1,28 @@
 #ifndef SCAN_H
 #define SCAN_H
 
-#include <iostream>
-#include <vector>
-#include <QDateTime>
+#include "measurement.h"
 
-using namespace std;
-
-/// @brief An object representing one full scan with 24 measurements.
-/// @todo Create a vector of `Scan` object somewhere to hold things for the history
+/**
+ * @brief A class that is responsible for checking if its measurement object is within the 50-70 bound.
+ * @todo Since this class only houses a function, it might not worth keeping around. I'm still going to leave it here because of the function implementation. However, Asaad, since you're doing the data visualization, you should incorporate this function of mine into your Summary class then dispose of this Scan class.
+ */
 class Scan {
     private:
-        /// @brief The ID associated with the user profile that took this scan.
-        int userID;
+        Measurement* measurement;
         
-        /// @brief A collection of measurement values that are recorded each time the device is pressed against the body. There should be 24 of these values.
-        vector<double> measurements;
-        
-        /// @brief The time that the scan was recorded in string form.
-        QString timeRecorded;
-    
     public:
-        Scan(int userID, QDateTime& timeRecorded);
+        Scan(Measurement* measurement);
         
-        // GETTERS AND SETTERS
-        
-        int getUserID() const;
-        double getMeasurement(int index) const;
-        vector<double>& getMeasurements();
-        QString& getTimeRecorded();
+        /**
+         * @brief Check if the provided value is within the pre-defined bound (check in defs.h)
+         * @param valueToCheck the value to check for
+         * @return
+         * -1 if lower than pre-defined bound
+         * 0 if within the pre-defined bound
+         * 1 if higher than the pre-defined bound
+         */
+        int healthChecking(double valueToCheck);
 };
 
 #endif // SCAN_H

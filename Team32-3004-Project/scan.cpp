@@ -1,23 +1,16 @@
 #include "scan.h"
+#include "defs.h"
 
-Scan::Scan(int userID, QDateTime& timeRecorded) {
-    this->userID = userID;
-    this->timeRecorded = timeRecorded.toString();
+Scan::Scan(Measurement* measurement) {
+    this->measurement = measurement;
 }
 
-int Scan::getUserID() const {
-    return this->userID;
-}
-
-double Scan::getMeasurement(int index) const {
-    if (index < 0 || index > measurements.size() || measurements.empty()) return -1;
-    return measurements[index];
-}
-
-vector<double>& Scan::getMeasurements() {
-    return this->measurements;
-}
-
-QString& Scan::getTimeRecorded() {
-    return this->timeRecorded;
+int Scan::healthChecking(double valueToCheck) {
+    if (valueToCheck < HEALTHY_LOWER_BOUND) {
+        return -1;
+    } else if (valueToCheck > HEALTHY_UPPER_BOUND) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
