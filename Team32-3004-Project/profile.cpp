@@ -40,3 +40,7 @@ Profile::~Profile(){
 void Profile::addMeasurement(Measurement *m){
     this->measurements.append(m);
 }
+
+int Profile::getID(){
+    return this->id;
+}

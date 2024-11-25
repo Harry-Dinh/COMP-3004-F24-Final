@@ -223,7 +223,7 @@ void MainWindow::measureMenuPressed(){
     beginMeasurement = true;
 
     QDateTime date = QDateTime::currentDateTime();
-    Measurement *m = new Measurement(selectedProfile, date);
+    Measurement *m = new Measurement(profiles[selectedProfile]->getID(), date);
     qInfo() << "Created new Measurement object";
     currMeasurement = m;
     ui->measurePointLabel->setText("Measure point: 1");
