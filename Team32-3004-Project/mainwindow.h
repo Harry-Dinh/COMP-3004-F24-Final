@@ -48,12 +48,16 @@ private:
         Ui::MainWindow *ui;
         QTimer* batteryTimer;
         int batteryPercentage;
+        bool deviceOn;
         QVector<Profile*> profiles;
         QVector<Menu*> menus;
         Menu *currMenu;//pointer to the current menu to display
         int selectedProfile;
         int numProfiles;
         history* historydb;
-        QVector<int> currMeasurements;
+
+        bool beginMeasurement;
+        Measurement* currMeasurement;//pointer to the current ongoing measurement
+        int measurePoint;//number of points measured
 };
 #endif // MAINWINDOW_H

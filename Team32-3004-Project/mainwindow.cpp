@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QDateEdit>
+#include <QDateTime>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -17,9 +18,16 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
     this->batteryTimer = new QTimer();
     this->batteryPercentage = STARTING_BATTERY_LEVEL;
+    this->deviceOn = false;
     this->selectedProfile = -1;
     this->numProfiles = 0;
-    
+    this->measurePoint = 0;
+    this->currMeasurement = nullptr;
+
+    //setting ui element states
+    ui->measurementHistory->setReadOnly(true);
+
+
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
     
@@ -86,6 +94,20 @@ void MainWindow::drainBattery() {
         ui->batteryIndicator->display(batteryPercentage);
     } else {
         batteryTimer->stop();       // Stop the timer when the battery level drops to 0
+        deviceOn = false;
+
+        //device battery ran out before finishing measurement
+        if((batteryPercentage == 0 && beginMeasurement == true)){
+            //delete measurement and reset measurement state
+            qInfo() << "Battery died, ending measurement";
+            if(currMeasurement != nullptr){
+                delete currMeasurement;
+            }
+            beginMeasurement = false;
+            currMeasurement = nullptr;
+            measurePoint = 0;
+            ui->measurementHistory->clear();
+        }
     }
 }
 
@@ -93,6 +115,7 @@ void MainWindow::powerButtonPressed() {
     if (!ui->powerButton->isDefault()) {
         ui->powerButton->setDefault(true);
         ui->powerButton->setText("Power Off");
+        deviceOn = true;
         batteryTimer->start(2000);      // Drain the battery 1% every 2 seconds
     } else {
         ui->powerButton->setDefault(false);
@@ -103,6 +126,23 @@ void MainWindow::powerButtonPressed() {
 
 void MainWindow::backButtonPressed(){
     if(currMenu->getParent() != nullptr){
+        if(currMenu->getIndex() == 3 ){//exit measurement menu
+            qInfo() << "Exiting measurement";
+            ui->measurementHistory->clear();
+
+
+            if(beginMeasurement){//exited an ongoing measurement
+                //delete measurement and reset measurement state
+
+                if(currMeasurement != nullptr){
+                    qInfo() << "Deleting this incomplete measurement";
+                    delete currMeasurement;
+                }
+                beginMeasurement = false;
+                currMeasurement = nullptr;
+                measurePoint = 0;
+            }
+        }
         changePage(currMenu->getParent()->getIndex());
     }
 }
@@ -180,6 +220,13 @@ void MainWindow::createProfile(){
 
 void MainWindow::measureMenuPressed(){
     changePage(3);
+    beginMeasurement = true;
+
+    QDateTime date = QDateTime::currentDateTime();
+    Measurement *m = new Measurement(selectedProfile, date);
+    qInfo() << "Created new Measurement object";
+    currMeasurement = m;
+    ui->measurePointLabel->setText("Measure point: 1");
 }
 
 void MainWindow::historyMenuPressed(){
@@ -198,8 +245,26 @@ void MainWindow::changePage(int index){
 }
 
 void MainWindow::probePressed(){
-    //generate value in range of 0 - 200 microamps?
-//    int randomVal =rand() %201;
+    //make measurements if in the measurement window
+    if(beginMeasurement == true && deviceOn){
+        qInfo() << "measuring point " << measurePoint;
+
+        //update measurement label
+        ui->measurePointLabel->setText("Measure point: "+ QString::number(measurePoint+2));
+        currMeasurement->generateValue();
+        ui->measurementHistory->append("Point: " + QString::number(measurePoint+1) + " Value: " + QString::number(currMeasurement->getValue(measurePoint)));
+        measurePoint++;//move onto next point
+
+    }
+
+    if(measurePoint == 24){//finished measuring
+        qInfo() << "Add measurement to this profile";
+        profiles[selectedProfile]->addMeasurement(currMeasurement);
+        beginMeasurement = false;
+        currMeasurement = nullptr;
+        measurePoint = 0;
+        ui->measurePointLabel->setText("Measuring complete");
+    }
 }
 
 void MainWindow::loadHistory(){
