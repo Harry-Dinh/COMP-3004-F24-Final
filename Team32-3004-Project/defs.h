@@ -65,5 +65,5 @@ string meridianToStr(Meridian meridian);
  * @brief Convert a valid Meridian string back to its enum form.
  */
 Meridian strToMeridian(string& mStr);
-
+Meridian intToMeridian(int);
 #endif // DEFS_H

@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QDateEdit>
+#include <QDateTime>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -17,9 +18,16 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
     this->batteryTimer = new QTimer();
     this->batteryPercentage = STARTING_BATTERY_LEVEL;
+    this->deviceOn = false;
     this->selectedProfile = -1;
     this->numProfiles = 0;
-    
+    this->measurePoint = 0;
+    this->currMeasurement = nullptr;
+
+    //setting ui element states
+    ui->measurementHistory->setReadOnly(true);
+
+
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
     
@@ -29,8 +37,13 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 
+    //connect ui navigation buttons
     connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
     connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
+    connect(ui->startMeasureButton, &QPushButton::clicked, this, &MainWindow::measureMenuPressed);
+    connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
+
+    connect(ui->probeButton, &QPushButton::clicked, this, &MainWindow::probePressed);
 
     //create profile menu, index 0
     addMenu("Profile Menu", nullptr, 0);
@@ -40,16 +53,18 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     //create profile creation menu, index 1
     addMenu("Create Profile", menus[0], 1);
-    menus[0]->addSubMenu(menus[1]);
 
     //create main menu, index 2
     addMenu("Main Menu", menus[0], 2);
-    menus[0]->addSubMenu(menus[2]);
 
-    currMenu = menus[0];
+    //create measurement menu, index 3
+    addMenu("Measure", menus[2], 3);
 
-    ui->MenuWidget->setCurrentIndex(0);
-  
+    //create history menu, index 4
+    addMenu("History", menus[2], 4);
+
+    changePage(0);
+
     historydb = new history();
 //     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
 }
@@ -79,6 +94,20 @@ void MainWindow::drainBattery() {
         ui->batteryIndicator->display(batteryPercentage);
     } else {
         batteryTimer->stop();       // Stop the timer when the battery level drops to 0
+        deviceOn = false;
+
+        //device battery ran out before finishing measurement
+        if((batteryPercentage == 0 && beginMeasurement == true)){
+            //delete measurement and reset measurement state
+            qInfo() << "Battery died, ending measurement";
+            if(currMeasurement != nullptr){
+                delete currMeasurement;
+            }
+            beginMeasurement = false;
+            currMeasurement = nullptr;
+            measurePoint = 0;
+            ui->measurementHistory->clear();
+        }
     }
 }
 
@@ -86,6 +115,7 @@ void MainWindow::powerButtonPressed() {
     if (!ui->powerButton->isDefault()) {
         ui->powerButton->setDefault(true);
         ui->powerButton->setText("Power Off");
+        deviceOn = true;
         batteryTimer->start(2000);      // Drain the battery 1% every 2 seconds
     } else {
         ui->powerButton->setDefault(false);
@@ -96,8 +126,24 @@ void MainWindow::powerButtonPressed() {
 
 void MainWindow::backButtonPressed(){
     if(currMenu->getParent() != nullptr){
-        ui->MenuWidget->setCurrentIndex(currMenu->getParent()->getIndex());
-        currMenu = menus[currMenu->getParent()->getIndex()];
+        if(currMenu->getIndex() == 3 ){//exit measurement menu
+            qInfo() << "Exiting measurement";
+            ui->measurementHistory->clear();
+
+
+            if(beginMeasurement){//exited an ongoing measurement
+                //delete measurement and reset measurement state
+
+                if(currMeasurement != nullptr){
+                    qInfo() << "Deleting this incomplete measurement";
+                    delete currMeasurement;
+                }
+                beginMeasurement = false;
+                currMeasurement = nullptr;
+                measurePoint = 0;
+            }
+        }
+        changePage(currMenu->getParent()->getIndex());
     }
 }
 
@@ -110,6 +156,12 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
     qInfo() << "profile added";
 }
 
+void MainWindow::loadProfile(){
+//    for(int i = 0; i < numProfiles; ++i){
+//        addProfile(historydb->getProfile(i));
+//    }
+}
+
 void MainWindow::deleteProfile(int id){
     delete profiles[id];//deallocate profile with id
     profiles.erase(profiles.begin()+id);//delete profile at id;
@@ -119,12 +171,14 @@ void MainWindow::addMenu(const QString &name, Menu* parent, int index){
     Menu *m = new Menu(name, parent);
     m->setIndex(index);
     menus.append(m);//add this pointer to the menus list
+    if(parent != nullptr){
+        parent->addSubMenu(m);
+    }
 }
 
 void MainWindow::createProfilePagePressed(){
     qInfo() << "handle profile creation screen";
-    ui->MenuWidget->setCurrentIndex(1);
-    currMenu = menus[1];
+    changePage(1);
 }
 
 void MainWindow::deleteProfilePressed(){
@@ -138,8 +192,7 @@ void MainWindow::deleteProfilePressed(){
 void MainWindow::loginProfilePressed(){
     qInfo() << "handle moving to app main menu";
     if(selectedProfile != -1){//a profile is selected
-        ui->MenuWidget->setCurrentIndex(2);
-        currMenu = menus[2];
+        changePage(2);
     }
 }
 
@@ -161,12 +214,74 @@ void MainWindow::createProfile(){
         numProfiles++;
     }
     //return to profiles page
-    ui->MenuWidget->setCurrentIndex(0);
-    currMenu = menus[0];
+    changePage(0);
 
+}
+
+void MainWindow::measureMenuPressed(){
+    changePage(3);
+    beginMeasurement = true;
+
+    QDateTime date = QDateTime::currentDateTime();
+    Measurement *m = new Measurement(profiles[selectedProfile]->getID(), date);
+    qInfo() << "Created new Measurement object";
+    currMeasurement = m;
+    ui->measurePointLabel->setText("Measure point: 1");
+}
+
+void MainWindow::historyMenuPressed(){
+    changePage(4);
 }
 
 void MainWindow::on_profileComboBox_currentIndexChanged(int index){
     qInfo() << "selected profile " << index;
     this->selectedProfile = index;
+}
+
+void MainWindow::changePage(int index){
+    ui->MenuWidget->setCurrentIndex(index);
+    currMenu = menus[index];
+    ui->pageTitle->setText(menus[index]->getName());
+}
+
+void MainWindow::probePressed(){
+    //make measurements if in the measurement window
+    if(beginMeasurement == true && deviceOn){
+        qInfo() << "measuring point " << measurePoint;
+
+        //update measurement label
+        ui->measurePointLabel->setText("Measure point: "+ QString::number(measurePoint+2));
+        currMeasurement->generateValue();
+        ui->measurementHistory->append("Point: " + QString::number(measurePoint+1) + " Value: " + QString::number(currMeasurement->getValue(measurePoint)));
+        measurePoint++;//move onto next point
+
+    }
+
+    if(measurePoint == 24){//finished measuring
+        qInfo() << "Add measurement to this profile";
+        profiles[selectedProfile]->addMeasurement(currMeasurement);
+        historydb->addHealth(currMeasurement);
+
+        beginMeasurement = false;
+        currMeasurement = nullptr;
+        measurePoint = 0;
+        ui->measurePointLabel->setText("Measuring complete");
+
+
+    }
+}
+
+void MainWindow::loadHistory(){
+    /*
+    //get history data associated with selectedID
+    for(int i = 0; i < vector.size(); ++i){
+        QWidget* hInfo = new QWidget();//widget for historical info
+        //add labels and other things to represent the data in UI
+
+
+
+        ui->tabWidget->addTab(hInfo,"history" + QString::number(1));
+    }
+
+    */
 }

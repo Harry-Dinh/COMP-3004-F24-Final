@@ -5,13 +5,18 @@
 #include <QString>
 #include <QDate>
 #include <QVector>
+#include "measurement.h"
 
-class Profile : public QObject{
-    Q_OBJECT
+class Profile{
     public:
         Profile(int id, const QString &firstName, const QString &lastName,
                 int weight, int height, const QString &DOB, const QString &country,
                 const QString &phone, const QString &email, const QString &password);
+        Profile(const Profile &p);
+        ~Profile();
+
+        void addMeasurement(Measurement *m);
+        int getID();
     private:
         int id;//user's id
         QString firstName;//stores first name of user
@@ -23,8 +28,8 @@ class Profile : public QObject{
         QString phone;//stores user's phone number
         QString email;//stores user's email
         QString password;//stores user's password
-//        QVector<> historicalData;//stores historical data
-    signals:
+        QVector<Measurement*> measurements;//stores measurements
+signals:
 
 };
 

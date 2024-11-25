@@ -3,11 +3,12 @@
 **Note:** The project's spec is currently a "draft" according to the prof. Things might change in the future.
 
 ## Next Meeting
-*TBD*
+Tuesday (Nov 26) @ 7:15 PM
+Discord Meeting
 
 ## Team Info
 - Team number: 32
-- Assigned TA: *TBD*
+- Assigned TA: Zahra Mousavi (zahramousavi@cmail.carleton.ca)
 
 ### Members
 - Harry Dinh

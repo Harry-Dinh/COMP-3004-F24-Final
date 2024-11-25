@@ -7,6 +7,7 @@
 #include <QSqlRecord>
 #include <QDebug>
 #include "profile.h"
+#include "measurement.h"
 
 //db class for project, will keep historical health data for each profile, to access for trend analysis.
 //vision for db
@@ -18,10 +19,10 @@ public:
     static const QString path;
     history();
     ~history();
-    bool addHealth(int mid, const QDateTime& time, QVector<int> healthData);
+    bool addHealth(Measurement*& measurement);
     bool addProfile(int pid, const QString& fname, const QString& lname, int weight, int height, const QString& pDOB, const QString& pcountry, const QString& pphone, const QString& pemail, const QString& ppassword);
-    void getProfile(int pid); //Profile return when implemented.
-    QVector<QString> getHealth(int mid); //placeholder QString can be swapped for Harry's class.
+    Profile getProfile(int pid); //Profile return when implemented.
+    QVector<Measurement> getHealth(int mid); //placeholder QString can be swapped for Harry's class.
 private:
     QSqlDatabase raDoTechDB;
     bool createTables();

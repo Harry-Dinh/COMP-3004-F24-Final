@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <random>
 #include "defs.h"
 #include "measurement.h"
@@ -27,7 +27,7 @@ vector<double>& Measurement::getValues() {
 }
 
 double Measurement::getValue(int index) const {
-    if (index < 0 || index > meridianValues.size() - 1 || meridianValues.empty()) {
+    if (index < 0 || index > int(meridianValues.size()) - 1 || meridianValues.empty()) {
         cout << "Index out of bounds or array is empty" << endl;
         return -1;
     }
@@ -55,7 +55,7 @@ void Measurement::generateValue() {
     random_device rand;
     mt19937 gen(rand());
     uniform_int_distribution<> distr(RYODORAKU_MIN_BOUND, RYODORAKU_MAX_BOUND); // Define the range (5, 160)
-    
+
     // Generate the random value then add it to the back of the array
     double randValue = distr(gen);
     this->meridianValues.push_back(randValue);
