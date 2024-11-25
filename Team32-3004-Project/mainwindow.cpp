@@ -260,10 +260,14 @@ void MainWindow::probePressed(){
     if(measurePoint == 24){//finished measuring
         qInfo() << "Add measurement to this profile";
         profiles[selectedProfile]->addMeasurement(currMeasurement);
+        historydb->addHealth(currMeasurement);
+
         beginMeasurement = false;
         currMeasurement = nullptr;
         measurePoint = 0;
         ui->measurePointLabel->setText("Measuring complete");
+
+
     }
 }
 

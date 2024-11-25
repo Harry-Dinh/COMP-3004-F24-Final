@@ -61,15 +61,15 @@ bool history::addProfile(int pid, const QString& fname, const QString& lname, in
     return raDoTechDB.commit();
 }
 
-bool history::addHealth(Measurement& measurement){
+bool history::addHealth(Measurement*& measurement){
     raDoTechDB.transaction();
-    vector<double>& measures = measurement.getValues(); //get list of measures from scan
+    vector<double>& measures = measurement->getValues(); //get list of measures from scan
 
     QSqlQuery query;
     //store left and right values from measures
     query.prepare("INSERT OR IGNORE INTO measurements (mId, date, m_1, m_2, m_3, m_4, m_5, m_6, m_7, m_8, m_9, m_10, m_11, m_12, m_13, m_14, m_15, m_16, m_17, m_18, m_19, m_20, m_21, m_22, m_23, m_24) VALUES (:mId, :date, :m_1, :m_2, :m_3, :m_4, :m_5, :m_6, :m_7, :m_8, :m_9, :m_10, :m_11, :m_12, :m_13, :m_14, :m_15, :m_16, :m_17, :m_18, :m_19, :m_20, :m_21, :m_22, :m_23, :m_24);");
-    query.bindValue(":mId", measurement.getUserID());
-    query.bindValue(":date", measurement.getTimeRecorded());
+    query.bindValue(":mId", measurement->getUserID());
+    query.bindValue(":date", measurement->getTimeRecorded());
     query.bindValue(":m_1", measures[0]);
     query.bindValue(":m_2", measures[1]);
     query.bindValue(":m_3", measures[2]);
