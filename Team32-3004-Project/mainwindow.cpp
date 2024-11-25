@@ -197,7 +197,7 @@ void MainWindow::changePage(int index){
     ui->pageTitle->setText(menus[index]->getName());
 }
 
-void probePressed(){
+void MainWindow::probePressed(){
     //generate value in range of 0 - 200 microamps?
 //    int randomVal =rand() %201;
 }
