@@ -28,3 +28,19 @@ Profile::Profile(const Profile &p){
     this->email = p.email;
     this->password = p.password;
 }
+
+Profile::~Profile(){
+    //delete all measurements
+    while(!measurements.empty()){
+        delete measurements.back();
+        measurements.pop_back();
+    }
+}
+
+void Profile::addMeasurement(Measurement *m){
+    this->measurements.append(m);
+}
+
+int Profile::getID(){
+    return this->id;
+}

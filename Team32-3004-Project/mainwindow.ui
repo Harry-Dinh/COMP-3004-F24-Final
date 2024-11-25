@@ -91,7 +91,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
@@ -408,17 +408,27 @@
      </widget>
     </widget>
     <widget class="QWidget" name="measurementPage">
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="measurePointLabel">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>310</y>
-        <width>91</width>
+        <x>20</x>
+        <y>100</y>
+        <width>131</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>measurement</string>
+       <string>Measure point: 1</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="measurementHistory">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>280</y>
+        <width>441</width>
+        <height>291</height>
+       </rect>
       </property>
      </widget>
     </widget>
