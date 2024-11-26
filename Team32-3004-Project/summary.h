@@ -2,7 +2,7 @@
 #define SUMMARY_H
 
 #include <QObject>
-#include "Measurement.h"
+#include "measurement.h"
 
 class Summary : public QObject{
     Q_OBJECT
