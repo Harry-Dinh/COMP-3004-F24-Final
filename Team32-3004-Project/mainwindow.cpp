@@ -66,7 +66,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     changePage(0);
 
     historydb = new history();
-//     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
+
+    historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
+    loadProfile();
 }
 
 MainWindow::~MainWindow() {
@@ -153,13 +155,25 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
 
     Profile *p = new Profile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
     profiles.append(p);
+    ui->profileComboBox->addItem(firstName);
+    qInfo() << "profile added";
+}
+
+void MainWindow::addProfile(Profile *p){
+    profiles.append(p);
+    ui->profileComboBox->addItem(p->getFirstName());
     qInfo() << "profile added";
 }
 
 void MainWindow::loadProfile(){
-//    for(int i = 0; i < numProfiles; ++i){
-//        addProfile(historydb->getProfile(i));
-//    }
+    QVector<int> ids = historydb->getAllProfileID();
+    for(int i = 0; i < ids.size(); ++i){
+        qInfo() << "Loading profile from DB with id: " << ids[i];
+
+        addProfile(historydb->getProfile(ids[i]));
+    }
+    numProfiles = ids.back()+1;//set the next id
+
 }
 
 void MainWindow::deleteProfile(int id){
@@ -210,7 +224,6 @@ void MainWindow::createProfile(){
         QString email = ui->emailTextBox->toPlainText();
         QString password = ui->passwordTextBox->toPlainText();//dont store passwords in plaintext
         addProfile(numProfiles,firstName,lastName,weight,height,dob,country,phone,email,password);
-        ui->profileComboBox->addItem(firstName);
         numProfiles++;
     }
     //return to profiles page

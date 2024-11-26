@@ -21,7 +21,8 @@ public:
     ~history();
     bool addHealth(Measurement*& measurement);
     bool addProfile(int pid, const QString& fname, const QString& lname, int weight, int height, const QString& pDOB, const QString& pcountry, const QString& pphone, const QString& pemail, const QString& ppassword);
-    Profile getProfile(int pid); //Profile return when implemented.
+    Profile* getProfile(int pid); //Profile return when implemented.
+    QVector<int> getAllProfileID();//return the IDs that exist in the table
     QVector<Measurement> getHealth(int mid); //placeholder QString can be swapped for Harry's class.
 private:
     QSqlDatabase raDoTechDB;
