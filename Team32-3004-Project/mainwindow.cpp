@@ -183,11 +183,6 @@ void MainWindow::loadProfile(){
     numProfiles = ids.back()+1;//set the next id
 }
 
-void MainWindow::deleteProfile(int id){
-    delete profiles[id];//deallocate profile with id
-    profiles.erase(profiles.begin()+id);//delete profile at id;
-}
-
 void MainWindow::addMenu(const QString &name, Menu* parent, int index){
     Menu *m = new Menu(name, parent);
     m->setIndex(index);
@@ -203,11 +198,17 @@ void MainWindow::createProfilePagePressed(){
 }
 
 void MainWindow::deleteProfilePressed(){
-    qInfo() << "handle deleting profile " << selectedProfile;
+    qInfo() << "handle deleting profile with id: " << profiles[selectedProfile]->getID();
+    historydb->deleteProfile(profiles[selectedProfile]->getID());
+
+
     if(profiles.size() != 0){
         profiles.erase(profiles.begin()+selectedProfile);
         ui->profileComboBox->removeItem(selectedProfile);
     }
+
+
+
 }
 
 void MainWindow::loginProfilePressed(){
