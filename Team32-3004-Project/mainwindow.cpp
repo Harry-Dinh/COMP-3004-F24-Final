@@ -154,6 +154,7 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
                             const QString &phone, const QString &email, const QString &password){
 
     Profile *p = new Profile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
+    historydb->addProfile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
     profiles.append(p);
     ui->profileComboBox->addItem(firstName);
     qInfo() << "profile added";
@@ -170,10 +171,15 @@ void MainWindow::loadProfile(){
     for(int i = 0; i < ids.size(); ++i){
         qInfo() << "Loading profile from DB with id: " << ids[i];
 
-        addProfile(historydb->getProfile(ids[i]));
+        Profile *p = historydb->getProfile(ids[i]);
+        addProfile(p);
+
+        //start loading all measurements associated with this profile
+        for(Measurement *m : historydb->getHealth(ids[i])){
+            p->addMeasurement(m);
+        }
     }
     numProfiles = ids.back()+1;//set the next id
-
 }
 
 void MainWindow::deleteProfile(int id){

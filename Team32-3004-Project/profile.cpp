@@ -48,3 +48,7 @@ int Profile::getID(){
 QString Profile::getFirstName(){
     return this->firstName;
 }
+
+Measurement* Profile::getMeasurement(int index){
+    return this->measurements[index];
+}

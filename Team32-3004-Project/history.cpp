@@ -153,9 +153,9 @@ QVector<int> history::getAllProfileID(){
     return ids;
 }
 
-QVector<Measurement> history::getHealth(int id){
+QVector<Measurement*> history::getHealth(int id){
     QSqlQuery query;
-    QVector<Measurement> healthHistory; //double check this one and how we are passign it.
+    QVector<Measurement*> healthHistory; //double check this one and how we are passign it.
     raDoTechDB.transaction();
 
     query.prepare("SELECT * FROM measurements WHERE mId=:mid");
@@ -164,7 +164,7 @@ QVector<Measurement> history::getHealth(int id){
 
     while(query.next()){ // go through each entry and add a scan object for each.
         QDateTime scanTime = QDateTime::fromString(query.value(1).toString(),"yyyy-MM-dd hh:mm");
-        Measurement scan = Measurement(query.value(0).toInt(), scanTime); //scan object
+        Measurement *scan = new Measurement(query.value(0).toInt(), scanTime); //scan object
 
 
         /*
@@ -184,7 +184,7 @@ QVector<Measurement> history::getHealth(int id){
 
 
         for(int i = 2; i<26; i++){ // assign values to measurements and add them to the scan object
-            scan.addExistingValue(query.value(i).toDouble());
+            scan->addExistingValue(query.value(i).toDouble());
         }
 
         healthHistory.push_back( scan );//add scan object to vector.
