@@ -26,8 +26,6 @@ class MainWindow : public QMainWindow {
                         const QString &phone, const QString &email, const QString &password);
         void addProfile(Profile *p);
         void loadProfile();//load profile from the SQL database
-
-        void deleteProfile(int id);
         void changePage(int index);
     public slots:
         void drainBattery();
