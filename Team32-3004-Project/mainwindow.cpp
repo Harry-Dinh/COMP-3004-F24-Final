@@ -8,6 +8,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ui_summarywindow.h"
 #include "defs.h"
 
 using namespace std;
@@ -170,3 +171,13 @@ void MainWindow::on_profileComboBox_currentIndexChanged(int index){
     qInfo() << "selected profile " << index;
     this->selectedProfile = index;
 }
+
+void MainWindow::on_viewSummaryButton_clicked()
+{
+    qInfo() << "showing summary";
+    if (!summaryWindow) {
+        summaryWindow = new SummaryWindow(nullptr);
+    }
+    summaryWindow->show();
+}
+
