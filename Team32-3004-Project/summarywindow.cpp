@@ -1,6 +1,11 @@
 #include "summarywindow.h"
 
-SummaryWindow::SummaryWindow(Scan* scan, QWidget *parent) : QWidget(parent), scan(scan) {
-    ui.setupUi(this);
+SummaryWindow::SummaryWindow(Measurement* measurement, QWidget *parent) : QWidget(parent), ui(new Ui::SummaryWindow) {
+    ui->setupUi(this);
+    this->measurement = measurement;
     setWindowTitle("Summary Window");
+}
+
+SummaryWindow::~SummaryWindow() {
+    delete ui;
 }

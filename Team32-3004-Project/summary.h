@@ -2,19 +2,18 @@
 #define SUMMARY_H
 
 #include <QObject>
-#include "scan.h"
+#include "Measurement.h"
 
 class Summary : public QObject{
     Q_OBJECT
     public:
-        Summary(Scan* scan);
+        Summary(Measurement* scan);
 
         int getUserID() const;
-        QString& getTimeRecorded();
+        QString getTimeRecorded();
         int getAmountOfMeasurements();
-        double getBaseline();
     private:
-        Scan* scan;
+        Measurement* scan;
 
 };
 

@@ -2,18 +2,23 @@
 #define SUMMARYWINDOW_H
 
 #include <QWidget>
-#include "scan.h"
+#include "measurement.h"
 #include "ui_summarywindow.h"
 
+namespace Ui {
+    class SummaryWindow;
+}
+    
 class SummaryWindow : public QWidget {
     Q_OBJECT
-
-public:
-    explicit SummaryWindow(Scan* scan, QWidget *parent = nullptr);
-
-private:
-    Ui::SummaryWindow ui;
-    Scan* scan;
+        
+    public:
+        explicit SummaryWindow(Measurement* measurement = nullptr, QWidget *parent = nullptr);
+        ~SummaryWindow();
+        
+    private:
+        Ui::SummaryWindow* ui;
+        Measurement* measurement;
 };
 
 #endif // SUMMARYWINDOW_H
