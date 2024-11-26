@@ -444,6 +444,17 @@
       </property>
       <property name="currentIndex">
        <number>-1</number>
+     <widget class="QPushButton" name="viewSummaryButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>530</y>
+        <width>441</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>View Summary</string>
       </property>
      </widget>
     </widget>

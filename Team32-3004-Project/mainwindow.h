@@ -6,6 +6,7 @@
 #include "profile.h"
 #include "menu.h"
 #include "history.h"
+#include "summarywindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -45,8 +46,11 @@ class MainWindow : public QMainWindow {
     private slots:
         void on_profileComboBox_currentIndexChanged(int index);
 
+        void on_viewSummaryButton_clicked();
+
 private:
         Ui::MainWindow *ui;
+        SummaryWindow *summaryWindow;
         QTimer* batteryTimer;
         int batteryPercentage;
         bool deviceOn;
