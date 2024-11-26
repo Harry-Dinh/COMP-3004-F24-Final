@@ -44,3 +44,7 @@ void Profile::addMeasurement(Measurement *m){
 int Profile::getID(){
     return this->id;
 }
+
+QString Profile::getFirstName(){
+    return this->firstName;
+}

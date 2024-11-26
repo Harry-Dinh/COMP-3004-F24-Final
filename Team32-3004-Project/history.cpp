@@ -99,7 +99,7 @@ bool history::addHealth(Measurement*& measurement){
     return raDoTechDB.commit();
 }
 
-Profile history::getProfile(int id){
+Profile* history::getProfile(int id){
     raDoTechDB.transaction();
     QSqlQuery query;
     query.prepare("SELECT * FROM profiles WHERE id=:id");
@@ -113,8 +113,44 @@ Profile history::getProfile(int id){
     //if (!date.isValid()) {
     //    qDebug() << "Error: Invalid date format";
     //}
-    return Profile(query.value(0).toInt(), query.value(1).toString(), query.value(2).toString(), query.value(3).toInt(), query.value(4).toInt(), query.value(5).toString(), query.value(6).toString(), query.value(7).toString(), query.value(8).toString(), query.value(9).toString());
+    int profileId = -1;
+    QString fName;
+    QString lName;
+    int weight = -1;
+    int height = -1;
+    QString DOB;
+    QString country;
+    QString phone;
+    QString email;
+    QString password;
 
+    while (query.next()){
+        profileId = query.value(0).toInt();
+        fName = query.value(1).toString();
+        lName = query.value(2).toString();
+        weight = query.value(3).toInt();
+        height = query.value(4).toInt();
+        DOB = query.value(5).toString();
+        country = query.value(6).toString();
+        phone = query.value(7).toString();
+        email = query.value(8).toString();
+        password = query.value(9).toString();
+    }
+
+    Profile *p = new Profile(profileId,fName,lName,weight,height,DOB,country,phone,email,password);
+    return p;
+}
+
+QVector<int> history::getAllProfileID(){
+    raDoTechDB.transaction();
+    QSqlQuery query;
+    QVector<int> ids;
+    query.prepare("SELECT id FROM profiles");
+    query.exec();
+    while(query.next()){
+        ids.push_back(query.value(0).toInt());
+    }
+    return ids;
 }
 
 QVector<Measurement> history::getHealth(int id){

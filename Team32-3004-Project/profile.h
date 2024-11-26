@@ -17,6 +17,7 @@ class Profile{
 
         void addMeasurement(Measurement *m);
         int getID();
+        QString getFirstName();
     private:
         int id;//user's id
         QString firstName;//stores first name of user
