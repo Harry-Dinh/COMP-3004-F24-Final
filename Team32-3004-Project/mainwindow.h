@@ -23,6 +23,7 @@ class MainWindow : public QMainWindow {
         void addProfile(int id, const QString &firstName, const QString &lastName,
                         int weight, int height, const QString &DOB, const QString &country,
                         const QString &phone, const QString &email, const QString &password);
+        void addProfile(Profile *p);
         void loadProfile();//load profile from the SQL database
 
         void deleteProfile(int id);
