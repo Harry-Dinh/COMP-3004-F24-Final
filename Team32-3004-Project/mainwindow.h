@@ -6,10 +6,11 @@
 #include "profile.h"
 #include "menu.h"
 #include "history.h"
+#include "summarywindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -25,10 +26,7 @@ class MainWindow : public QMainWindow {
                         const QString &phone, const QString &email, const QString &password);
         void addProfile(Profile *p);
         void loadProfile();//load profile from the SQL database
-
-        void deleteProfile(int id);
         void changePage(int index);
-        void loadHistory();//load all historical data from the SQL database
     public slots:
         void drainBattery();
         void powerButtonPressed();
@@ -45,8 +43,11 @@ class MainWindow : public QMainWindow {
     private slots:
         void on_profileComboBox_currentIndexChanged(int index);
 
+        void on_viewSummaryButton_clicked();
+
 private:
         Ui::MainWindow *ui;
+        SummaryWindow *summaryWindow;
         QTimer* batteryTimer;
         int batteryPercentage;
         bool deviceOn;

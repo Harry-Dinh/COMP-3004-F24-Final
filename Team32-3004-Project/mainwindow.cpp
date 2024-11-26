@@ -9,6 +9,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ui_summarywindow.h"
 #include "defs.h"
 
 using namespace std;
@@ -154,6 +155,7 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
                             const QString &phone, const QString &email, const QString &password){
 
     Profile *p = new Profile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
+    historydb->addProfile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
     profiles.append(p);
     ui->profileComboBox->addItem(firstName);
     qInfo() << "profile added";
@@ -170,15 +172,15 @@ void MainWindow::loadProfile(){
     for(int i = 0; i < ids.size(); ++i){
         qInfo() << "Loading profile from DB with id: " << ids[i];
 
-        addProfile(historydb->getProfile(ids[i]));
+        Profile *p = historydb->getProfile(ids[i]);
+        addProfile(p);
+
+        //start loading all measurements associated with this profile
+        for(Measurement *m : historydb->getHealth(ids[i])){
+            p->addMeasurement(m);
+        }
     }
     numProfiles = ids.back()+1;//set the next id
-
-}
-
-void MainWindow::deleteProfile(int id){
-    delete profiles[id];//deallocate profile with id
-    profiles.erase(profiles.begin()+id);//delete profile at id;
 }
 
 void MainWindow::addMenu(const QString &name, Menu* parent, int index){
@@ -196,11 +198,17 @@ void MainWindow::createProfilePagePressed(){
 }
 
 void MainWindow::deleteProfilePressed(){
-    qInfo() << "handle deleting profile " << selectedProfile;
+    qInfo() << "handle deleting profile with id: " << profiles[selectedProfile]->getID();
+    historydb->deleteProfile(profiles[selectedProfile]->getID());
+
+
     if(profiles.size() != 0){
         profiles.erase(profiles.begin()+selectedProfile);
         ui->profileComboBox->removeItem(selectedProfile);
     }
+
+
+
 }
 
 void MainWindow::loginProfilePressed(){
@@ -284,17 +292,11 @@ void MainWindow::probePressed(){
     }
 }
 
-void MainWindow::loadHistory(){
-    /*
-    //get history data associated with selectedID
-    for(int i = 0; i < vector.size(); ++i){
-        QWidget* hInfo = new QWidget();//widget for historical info
-        //add labels and other things to represent the data in UI
-
-
-
-        ui->tabWidget->addTab(hInfo,"history" + QString::number(1));
+void MainWindow::on_viewSummaryButton_clicked()
+{
+    qInfo() << "showing summary";
+    if (!summaryWindow) {
+        summaryWindow = new SummaryWindow(nullptr);
     }
-
-    */
+    summaryWindow->show();
 }

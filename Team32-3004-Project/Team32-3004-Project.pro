@@ -16,7 +16,9 @@ SOURCES += \
     measurement.cpp \
     menu.cpp \
     profile.cpp \
-    scan.cpp
+    scan.cpp \
+    summary.cpp \
+    summarywindow.cpp
 
 HEADERS += \
     history.h \
@@ -25,10 +27,14 @@ HEADERS += \
     menu.h \
     profile.h \
     defs.h \
-    scan.h
+    scan.h \
+    summary.h \
+    summarywindow.h \
+    ui_summarywindow.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    summarywindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

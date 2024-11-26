@@ -35,7 +35,7 @@ bool history::createTables(){
     query.exec("CREATE TABLE IF NOT EXISTS profiles(id integer primary key not null, firstName text NOT NULL, lastName text NOT NULL, weight integer NOT NULL, height integer NOT NULL,DOB text NOT NULL, country text NOT NULL, phone text NOT NULL, email text NOT NULL, password text NOT NULL, FOREIGN KEY(id) REFERENCES measurements(mId));");
 
     //Make data table
-    query.exec("CREATE TABLE IF NOT EXISTS measurements(mId integer primary key not null,date text NOT NULL,m_1 REAL NOT NULL,m_2 REAL NOT NULL,m_3 REAL NOT NULL,m_4 REAL NOT NULL,m_5 REAL NOT NULL,m_6 REAL NOT NULL,m_7 REAL NOT NULL,m_8 REAL NOT NULL,m_9 REAL NOT NULL,m_10 REAL NOT NULL,m_11 REAL NOT NULL,m_12 REAL NOT NULL,m_13 REAL NOT NULL,m_14 REAL NOT NULL,m_15 REAL NOT NULL, m_16 REAL NOT NULL,m_17 REAL NOT NULL,m_18 REAL NOT NULL, m_19 REAL NOT NULL, m_20 REAL NOT NULL, m_21 REAL NOT NULL,m_22 REAL NOT NULL,m_23 REAL NOT NULL,m_24 REAL NOT NULL );");
+    query.exec("CREATE TABLE IF NOT EXISTS measurements(mId integer not null,date text NOT NULL,m_1 REAL NOT NULL,m_2 REAL NOT NULL,m_3 REAL NOT NULL,m_4 REAL NOT NULL,m_5 REAL NOT NULL,m_6 REAL NOT NULL,m_7 REAL NOT NULL,m_8 REAL NOT NULL,m_9 REAL NOT NULL,m_10 REAL NOT NULL,m_11 REAL NOT NULL,m_12 REAL NOT NULL,m_13 REAL NOT NULL,m_14 REAL NOT NULL,m_15 REAL NOT NULL, m_16 REAL NOT NULL,m_17 REAL NOT NULL,m_18 REAL NOT NULL, m_19 REAL NOT NULL, m_20 REAL NOT NULL, m_21 REAL NOT NULL,m_22 REAL NOT NULL,m_23 REAL NOT NULL,m_24 REAL NOT NULL );");
 
     return raDoTechDB.commit();
 }
@@ -61,13 +61,28 @@ bool history::addProfile(int pid, const QString& fname, const QString& lname, in
     return raDoTechDB.commit();
 }
 
+bool history::deleteProfile(int pid){
+    raDoTechDB.transaction();
+    QSqlQuery query;
+    //delete profile with this id
+    query.prepare("DELETE FROM profiles WHERE id=?");
+    query.addBindValue(pid);
+    query.exec();
+
+//    //delete all measurements associated with this id
+    query.prepare("DELETE FROM measurements WHERE mId=?");
+    query.addBindValue(pid);
+    query.exec();
+    return raDoTechDB.commit();
+}
+
 bool history::addHealth(Measurement*& measurement){
     raDoTechDB.transaction();
     vector<double>& measures = measurement->getValues(); //get list of measures from scan
 
     QSqlQuery query;
     //store left and right values from measures
-    query.prepare("INSERT OR IGNORE INTO measurements (mId, date, m_1, m_2, m_3, m_4, m_5, m_6, m_7, m_8, m_9, m_10, m_11, m_12, m_13, m_14, m_15, m_16, m_17, m_18, m_19, m_20, m_21, m_22, m_23, m_24) VALUES (:mId, :date, :m_1, :m_2, :m_3, :m_4, :m_5, :m_6, :m_7, :m_8, :m_9, :m_10, :m_11, :m_12, :m_13, :m_14, :m_15, :m_16, :m_17, :m_18, :m_19, :m_20, :m_21, :m_22, :m_23, :m_24);");
+    query.prepare("INSERT INTO measurements (mId, date, m_1, m_2, m_3, m_4, m_5, m_6, m_7, m_8, m_9, m_10, m_11, m_12, m_13, m_14, m_15, m_16, m_17, m_18, m_19, m_20, m_21, m_22, m_23, m_24) VALUES (:mId, :date, :m_1, :m_2, :m_3, :m_4, :m_5, :m_6, :m_7, :m_8, :m_9, :m_10, :m_11, :m_12, :m_13, :m_14, :m_15, :m_16, :m_17, :m_18, :m_19, :m_20, :m_21, :m_22, :m_23, :m_24);");
     query.bindValue(":mId", measurement->getUserID());
     query.bindValue(":date", measurement->getTimeRecorded());
     query.bindValue(":m_1", measures[0]);
@@ -153,9 +168,9 @@ QVector<int> history::getAllProfileID(){
     return ids;
 }
 
-QVector<Measurement> history::getHealth(int id){
+QVector<Measurement*> history::getHealth(int id){
     QSqlQuery query;
-    QVector<Measurement> healthHistory; //double check this one and how we are passign it.
+    QVector<Measurement*> healthHistory; //double check this one and how we are passign it.
     raDoTechDB.transaction();
 
     query.prepare("SELECT * FROM measurements WHERE mId=:mid");
@@ -164,7 +179,7 @@ QVector<Measurement> history::getHealth(int id){
 
     while(query.next()){ // go through each entry and add a scan object for each.
         QDateTime scanTime = QDateTime::fromString(query.value(1).toString(),"yyyy-MM-dd hh:mm");
-        Measurement scan = Measurement(query.value(0).toInt(), scanTime); //scan object
+        Measurement *scan = new Measurement(query.value(0).toInt(), scanTime); //scan object
 
 
         /*
@@ -184,7 +199,7 @@ QVector<Measurement> history::getHealth(int id){
 
 
         for(int i = 2; i<26; i++){ // assign values to measurements and add them to the scan object
-            scan.addExistingValue(query.value(i).toDouble());
+            scan->addExistingValue(query.value(i).toDouble());
         }
 
         healthHistory.push_back( scan );//add scan object to vector.
