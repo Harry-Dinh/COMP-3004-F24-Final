@@ -444,17 +444,6 @@
       </property>
       <property name="currentIndex">
        <number>-1</number>
-     <widget class="QPushButton" name="viewSummaryButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>530</y>
-        <width>441</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>View Summary</string>
       </property>
      </widget>
     </widget>
@@ -612,7 +601,7 @@
       <string>Title</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="backButton">
@@ -639,10 +628,10 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Shape::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Shadow::Raised</enum>
     </property>
     <widget class="QPushButton" name="powerButton">
      <property name="geometry">
