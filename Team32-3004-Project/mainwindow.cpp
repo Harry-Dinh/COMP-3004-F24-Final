@@ -289,18 +289,3 @@ void MainWindow::probePressed(){
 
     }
 }
-
-void MainWindow::loadHistory(){
-    /*
-    //get history data associated with selectedID
-    for(int i = 0; i < vector.size(); ++i){
-        QWidget* hInfo = new QWidget();//widget for historical info
-        //add labels and other things to represent the data in UI
-
-
-
-        ui->tabWidget->addTab(hInfo,"history" + QString::number(1));
-    }
-
-    */
-}
