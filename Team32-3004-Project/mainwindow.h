@@ -29,7 +29,6 @@ class MainWindow : public QMainWindow {
 
         void deleteProfile(int id);
         void changePage(int index);
-        void loadHistory();//load all historical data from the SQL database
     public slots:
         void drainBattery();
         void powerButtonPressed();
