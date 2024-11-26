@@ -6,6 +6,7 @@
 #include <QSpinBox>
 #include <QDateEdit>
 #include <QDateTime>
+#include <QListWidgetItem>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -27,7 +28,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     //setting ui element states
     ui->measurementHistory->setReadOnly(true);
-
+    
+    // Initialize the recommendation page
+    initRecommendations();
 
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
@@ -43,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
     connect(ui->startMeasureButton, &QPushButton::clicked, this, &MainWindow::measureMenuPressed);
     connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
+    connect(ui->recommendationButton, &QPushButton::clicked, this, &MainWindow::recommendationPageButtonPressed);
 
     connect(ui->probeButton, &QPushButton::clicked, this, &MainWindow::probePressed);
 
@@ -299,4 +303,21 @@ void MainWindow::on_viewSummaryButton_clicked()
         summaryWindow = new SummaryWindow(nullptr);
     }
     summaryWindow->show();
+}
+
+void MainWindow::initRecommendations() {
+    // Adding the recommendations
+    Recommendation rmd = Recommendation(nullptr, "Consult with Your Doctor", "Bring your measurement results to your doctor to have better insight on how these data affects your overall health and get the appropriate treatment if possible.");
+    this->recommendations.push_back(rmd);
+    
+    // Pushing the recommendation array to the list view
+    QListWidgetItem listItem;
+    for (Recommendation& recommendation : recommendations) {
+        listItem = QListWidgetItem(ui->recommendationList);
+        ui->recommendationList->addItem(&listItem);
+    }
+}
+
+void MainWindow::recommendationPageButtonPressed() {
+    changePage(5);
 }

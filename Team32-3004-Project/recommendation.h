@@ -1,19 +1,21 @@
 #ifndef RECOMMENDATION_H
 #define RECOMMENDATION_H
 
-#include <QString>
+#include <iostream>
 #include <QWidget>
 #include <QVBoxLayout>
 
+using namespace std;
+
 class Recommendation: public QWidget {
     private:
-        QString title;
-        QString description;
+        string title;
+        string description;
         
     public:
-        Recommendation(QWidget* parent, QString& title, QString& description);
+        Recommendation(QWidget* parent, string title, string description);
         
-        QVBoxLayout& createRecommendationWidget();
+        QVBoxLayout* createRecommendationWidget();
 };
 
 #endif // RECOMMENDATION_H

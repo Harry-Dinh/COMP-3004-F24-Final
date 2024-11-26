@@ -91,7 +91,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
@@ -446,7 +446,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="recommendationPage">
-     <widget class="QListView" name="listView">
+     <widget class="QListWidget" name="recommendationList">
       <property name="geometry">
        <rect>
         <x>10</x>

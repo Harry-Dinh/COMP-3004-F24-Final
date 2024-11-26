@@ -7,6 +7,7 @@
 #include "menu.h"
 #include "history.h"
 #include "summarywindow.h"
+#include "recommendation.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,6 +28,8 @@ class MainWindow : public QMainWindow {
         void addProfile(Profile *p);
         void loadProfile();//load profile from the SQL database
         void changePage(int index);
+        void initRecommendations();
+        
     public slots:
         void drainBattery();
         void powerButtonPressed();
@@ -38,6 +41,7 @@ class MainWindow : public QMainWindow {
         void historyMenuPressed();
         void probePressed();
         void createProfile();
+        void recommendationPageButtonPressed();
 
 
     private slots:
@@ -61,5 +65,6 @@ private:
         bool beginMeasurement;
         Measurement* currMeasurement;//pointer to the current ongoing measurement
         int measurePoint;//number of points measured
+        QVector<Recommendation> recommendations;
 };
 #endif // MAINWINDOW_H
