@@ -1,11 +1,15 @@
 #include "summarywindow.h"
 
-SummaryWindow::SummaryWindow(Measurement* measurement, QWidget *parent) : QWidget(parent), ui(new Ui::SummaryWindow) {
+SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent), ui(new Ui::SummaryWindow) {
     ui->setupUi(this);
-    this->measurement = measurement;
+    this->profile = profile;
     setWindowTitle("Summary Window");
 }
 
 SummaryWindow::~SummaryWindow() {
     delete ui;
+}
+
+void SummaryWindow::setUserId() {
+    ui->userId->setText(profile->getFirstName());
 }

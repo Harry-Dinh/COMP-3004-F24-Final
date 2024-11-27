@@ -304,11 +304,17 @@ void MainWindow::probePressed(){
 
 void MainWindow::on_viewSummaryButton_clicked()
 {
+}
+
+void MainWindow::on_summaryButton_clicked()
+{
     qInfo() << "showing summary";
+    qInfo() << this->selectedProfile;
     if (!summaryWindow) {
-        summaryWindow = new SummaryWindow(nullptr);
+        summaryWindow = new SummaryWindow(profiles[selectedProfile]);
     }
     summaryWindow->show();
+    summaryWindow->setUserId();
 }
 
 void MainWindow::initRecommendations() {
