@@ -91,7 +91,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
@@ -459,15 +459,29 @@
      </widget>
     </widget>
     <widget class="QWidget" name="recommendationPage">
-     <widget class="QListView" name="listView">
+     <widget class="QListWidget" name="recommendationList">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>30</y>
         <width>441</width>
-        <height>551</height>
+        <height>540</height>
        </rect>
       </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="itemAlignment">
+       <set>Qt::AlignmentFlag::AlignLeading</set>
+      </property>
+      <item>
+       <property name="text">
+        <string>Bring these measurements to your doctor to have a better insight on what these data mean for your overall health.</string>
+       </property>
+       <property name="icon">
+        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
+       </property>
+      </item>
      </widget>
     </widget>
     <widget class="QWidget" name="historyPage">

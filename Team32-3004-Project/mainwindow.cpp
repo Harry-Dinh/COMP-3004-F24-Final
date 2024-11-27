@@ -6,6 +6,10 @@
 #include <QSpinBox>
 #include <QDateEdit>
 #include <QDateTime>
+#include <QListWidgetItem>
+#include <QVBoxLayout>
+#include <QFont>
+#include <QWidget>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -28,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     //setting ui element states
     ui->measurementHistory->setReadOnly(true);
 
-
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
     
@@ -43,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->createProfileButton, &QPushButton::clicked, this, &MainWindow::createProfile);
     connect(ui->startMeasureButton, &QPushButton::clicked, this, &MainWindow::measureMenuPressed);
     connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
+    connect(ui->recommendationButton, &QPushButton::clicked, this, &MainWindow::recommendationPageButtonPressed);
 
     connect(ui->probeButton, &QPushButton::clicked, this, &MainWindow::probePressed);
 
@@ -60,6 +64,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     //create measurement menu, index 3
     addMenu("Measure", menus[2], 3);
+    
+    // Create recommendations menu, index 5
+    addMenu("Recommendations", menus[2], 5);
 
     //create history menu, index 4
     addMenu("History", menus[2], 4);
@@ -70,6 +77,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
     loadProfile();
+    
+    // Initialize the recommendation page
+    initRecommendations();
 }
 
 MainWindow::~MainWindow() {
@@ -251,7 +261,7 @@ void MainWindow::measureMenuPressed(){
 }
 
 void MainWindow::historyMenuPressed(){
-    changePage(4);
+    changePage(5);
 }
 
 void MainWindow::on_profileComboBox_currentIndexChanged(int index){
@@ -307,3 +317,10 @@ void MainWindow::on_summaryButton_clicked()
     summaryWindow->setUserId();
 }
 
+void MainWindow::initRecommendations() {
+    cout << "initRecommendations() called" << endl;
+}
+
+void MainWindow::recommendationPageButtonPressed() {
+    changePage(4);
+}
