@@ -45,6 +45,8 @@ class MainWindow : public QMainWindow {
 
         void on_viewSummaryButton_clicked();
 
+        void on_summaryButton_clicked();
+
 private:
         Ui::MainWindow *ui;
         SummaryWindow *summaryWindow;

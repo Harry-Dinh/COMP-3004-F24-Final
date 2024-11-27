@@ -2,7 +2,7 @@
 #define SUMMARYWINDOW_H
 
 #include <QWidget>
-#include "measurement.h"
+#include "profile.h"
 #include "ui_summarywindow.h"
 
 namespace Ui {
@@ -13,12 +13,15 @@ class SummaryWindow : public QWidget {
     Q_OBJECT
         
     public:
-        explicit SummaryWindow(Measurement* measurement = nullptr, QWidget *parent = nullptr);
+        explicit SummaryWindow(Profile* profile = nullptr, QWidget *parent = nullptr);
+        void setUserId();
         ~SummaryWindow();
         
     private:
         Ui::SummaryWindow* ui;
-        Measurement* measurement;
+        Profile* profile;
 };
+
+
 
 #endif // SUMMARYWINDOW_H
