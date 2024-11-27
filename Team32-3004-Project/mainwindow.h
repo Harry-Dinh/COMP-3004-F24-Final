@@ -28,7 +28,6 @@ class MainWindow : public QMainWindow {
         void addProfile(Profile *p);
         void loadProfile();//load profile from the SQL database
         void changePage(int index);
-        void initRecommendations();
         
     public slots:
         void drainBattery();

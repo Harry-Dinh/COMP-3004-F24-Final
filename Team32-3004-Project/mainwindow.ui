@@ -677,7 +677,7 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <widget class="QPushButton" name="powerButton">
      <property name="geometry">
@@ -712,7 +712,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>measure point</string>
+      <string>Take Measurement</string>
      </property>
     </widget>
    </widget>

@@ -77,9 +77,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
     loadProfile();
-    
-    // Initialize the recommendation page
-    initRecommendations();
 }
 
 MainWindow::~MainWindow() {
@@ -315,10 +312,6 @@ void MainWindow::on_summaryButton_clicked()
     }
     summaryWindow->show();
     summaryWindow->setUserId();
-}
-
-void MainWindow::initRecommendations() {
-    cout << "initRecommendations() called" << endl;
 }
 
 void MainWindow::recommendationPageButtonPressed() {
