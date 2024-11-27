@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QString>
 #include "profile.h"
 #include "menu.h"
 #include "history.h"
@@ -65,6 +66,6 @@ private:
         bool beginMeasurement;
         Measurement* currMeasurement;//pointer to the current ongoing measurement
         int measurePoint;//number of points measured
-        QVector<Recommendation> recommendations;
+        QVector<QString> recommendations;
 };
 #endif // MAINWINDOW_H

@@ -16,7 +16,6 @@ SOURCES += \
     measurement.cpp \
     menu.cpp \
     profile.cpp \
-    recommendation.cpp \
     scan.cpp \
     summary.cpp \
     summarywindow.cpp
@@ -28,7 +27,6 @@ HEADERS += \
     menu.h \
     profile.h \
     defs.h \
-    recommendation.h \
     scan.h \
     summary.h \
     summarywindow.h \
