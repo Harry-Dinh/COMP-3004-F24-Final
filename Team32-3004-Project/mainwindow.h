@@ -8,7 +8,6 @@
 #include "menu.h"
 #include "history.h"
 #include "summarywindow.h"
-#include "recommendation.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
