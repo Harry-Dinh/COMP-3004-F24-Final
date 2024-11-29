@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // Initialize all member variables
     ui->setupUi(this);
     this->batteryTimer = new QTimer();
+    this->chargingTimer = new QTimer();
     this->batteryPercentage = STARTING_BATTERY_LEVEL;
     this->deviceOn = false;
     this->selectedProfile = -1;
@@ -35,8 +36,14 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // Connect the battery timer to the appropriate function
     connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
     
+    // Connect the charge timer to the appropriate function
+    connect(this->chargingTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::chargeDevice));
+    
     // Connect the power button to its respective function
     connect(ui->powerButton, &QPushButton::clicked, this, &MainWindow::powerButtonPressed);
+    
+    // Connect the recharge button to its respective function
+    connect(ui->rechargeButton, &QPushButton::clicked, this, &MainWindow::rechargeButtonPressed);
     
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
@@ -100,11 +107,21 @@ MainWindow::~MainWindow() {
 void MainWindow::drainBattery() {
     cout << "drainBattery() called" << endl;
     if (batteryPercentage > 0) {
+        ui->powerButton->setDisabled(false);
         --batteryPercentage;
         ui->batteryIndicator->display(batteryPercentage);
     } else {
         batteryTimer->stop();       // Stop the timer when the battery level drops to 0
         deviceOn = false;
+        
+        // Device ran out of battery
+        if (batteryPercentage <= 0) {
+            cout << "Battery died while idling" << endl;
+            ui->powerButton->setDisabled(true);
+            ui->powerButton->setDefault(false);
+            ui->powerButton->setText("Power On");
+            ui->rechargeButton->setDisabled(false);
+        }
 
         //device battery ran out before finishing measurement
         if((batteryPercentage == 0 && beginMeasurement == true)){
@@ -116,21 +133,63 @@ void MainWindow::drainBattery() {
             beginMeasurement = false;
             currMeasurement = nullptr;
             measurePoint = 0;
+            
+            // Update some UI elements to reflect drained battery level
             ui->measurementHistory->clear();
         }
     }
 }
 
+void MainWindow::chargeDevice() {
+    cout << "chargeDevice() called" << endl;
+    if (batteryPercentage < STARTING_BATTERY_LEVEL) {
+        ++batteryPercentage;
+        ui->batteryIndicator->display(batteryPercentage);
+    } else {
+        chargingTimer->stop();
+    }
+}
+
 void MainWindow::powerButtonPressed() {
+    // Prevent the user from turning on the device when the battery died
+    if (batteryPercentage <= 0) {
+        ui->powerButton->setDisabled(true);
+    } else {
+        ui->powerButton->setDisabled(false);
+    }
+    
     if (!ui->powerButton->isDefault()) {
         ui->powerButton->setDefault(true);
         ui->powerButton->setText("Power Off");
+        ui->rechargeButton->setDisabled(true);      // Prevent the device from charging when it's on (this is to avoid subtracting then re-adding the same variable)
         deviceOn = true;
         batteryTimer->start(2000);      // Drain the battery 1% every 2 seconds
     } else {
         ui->powerButton->setDefault(false);
         ui->powerButton->setText("Power On");
+        ui->rechargeButton->setDisabled(false);
+        deviceOn = false;
         batteryTimer->stop();           // Simulate the action of turning off the device when the power button is pressed again
+    }
+}
+
+void MainWindow::rechargeButtonPressed() {
+    if (!ui->rechargeButton->isDefault()) {
+        ui->rechargeButton->setDefault(true);
+        ui->rechargeButton->setText("Stop Charging");
+        ui->powerButton->setDisabled(true);
+        if (batteryPercentage == STARTING_BATTERY_LEVEL) {
+            ui->chargeStatus->setText("Battery fully charged!");
+        } else {
+            ui->chargeStatus->setText("Charging...");
+        }
+        chargingTimer->start(500);    // Charge the battery 1% every 0.5 seconds
+    } else {
+        ui->rechargeButton->setDefault(false);
+        ui->rechargeButton->setText("Recharge");
+        ui->powerButton->setDisabled(false);
+        ui->chargeStatus->setText("Not charging");
+        chargingTimer->stop();
     }
 }
 
