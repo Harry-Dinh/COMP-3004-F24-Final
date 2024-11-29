@@ -31,7 +31,9 @@ class MainWindow : public QMainWindow {
         
     public slots:
         void drainBattery();
+        void chargeDevice();
         void powerButtonPressed();
+        void rechargeButtonPressed();
         void backButtonPressed();
         void createProfilePagePressed();
         void deleteProfilePressed();
@@ -54,6 +56,7 @@ private:
         Ui::MainWindow *ui;
         SummaryWindow *summaryWindow;
         QTimer* batteryTimer;
+        QTimer* chargingTimer;
         int batteryPercentage;
         bool deviceOn;
         QVector<Profile*> profiles;
