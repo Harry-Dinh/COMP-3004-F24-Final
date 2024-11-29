@@ -111,7 +111,13 @@ bool history::addHealth(Measurement*& measurement){
     query.bindValue(":m_24", measures[23]);
 
     query.exec();
-    return raDoTechDB.commit();
+    if(raDoTechDB.commit()){
+        qDebug() << "Measurement added";
+        return true;
+    }else{
+        qDebug() << "Measurement added";
+        return false;
+    }
 }
 
 Profile* history::getProfile(int id){
