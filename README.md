@@ -1,7 +1,7 @@
 # COMP 3004 (F24) Final Project
 
 ## Next Meeting
-Tuesday (Nov 26) @ 7:15 PM
+*TBD*
 Discord Meeting
 
 ## Team Info
