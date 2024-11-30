@@ -332,7 +332,9 @@ void MainWindow::historyMenuPressed(){
         measurementWidget->setLayout(layout);
 
         for(int i = 0; i < m->getValues().size(); ++i){//add measurement labels to the widget
-            QLabel* label = new QLabel("Point " + QString::number(i+1) + " Value: " +QString::number(m->getValues()[i]));
+            double currentValue = m->getValue(i);
+            QString interpretation = QString::fromUtf8(m->interpretValue(currentValue).c_str());
+            QLabel* label = new QLabel("Point " + QString::number(i+1) + " Value: " +QString::number(currentValue) + " (" + interpretation + ")");
             layout->addWidget(label);
         }
 
