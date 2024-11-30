@@ -13,10 +13,6 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
     setWindowTitle("Summary Window");
     ui->userId->setText(profile->getFirstName());
 
-    for(int i=0;i<profile->getNumMeasurements();i++){
-        ui->userId->setText("Test");//);
-    }
-
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setGeometry(10, 75, 300, 200);
 
@@ -24,16 +20,16 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
     QWidget *contentWidget = new QWidget();
     QHBoxLayout *layout = new QHBoxLayout(contentWidget);
 
-    for (int i = 1; i <= 3; ++i) {
-        QPushButton *button = new QPushButton(QString("Measurement %1").arg(i), contentWidget);
+    for (int i = 1; i <= profile->getNumMeasurements(); ++i) {
+        QPushButton *button = new QPushButton(QString(), contentWidget);
         button->setMinimumSize(200, 50);
-        button->setText("this time");//profile->getMeasurement(i)->getTimeRecorded());
+        button->setText(profile->getMeasurement(i)->getTimeRecorded());
         layout->addWidget(button);
         connect(button, &QPushButton::clicked, this, [profile, i]() {
-            QDateTime currentDateTime = QDateTime::currentDateTime();
-            QVector<double> meridianValues = {1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8};
-            Measurement* measurement = new Measurement(123, currentDateTime, meridianValues); // profile->getMeasurement(i)
-            // std::vector<double> meridianValues = measurement->getValues();
+            //QDateTime currentDateTime = QDateTime::currentDateTime();
+            //QVector<double> meridianValues = {1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8};
+            Measurement* measurement = profile->getMeasurement(i); // new Measurement(123, currentDateTime, meridianValues);
+            QVector<double> meridianValues = measurement->getValues();
 
             QWidget *measurementWidget = new QWidget();
             QVBoxLayout *measurementLayout = new QVBoxLayout(measurementWidget);
@@ -42,6 +38,11 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
             profileLabel->setText(profile->getFirstName());
             profileLabel->setMinimumSize(200, 50);
             measurementLayout->addWidget(profileLabel);
+
+            QLabel *timeStamp = new QLabel();
+            timeStamp->setText(measurement->getTimeRecorded());
+            timeStamp->setMinimumSize(200, 50);
+            measurementLayout->addWidget(timeStamp);
 
             for (std::size_t index = 0; index < meridianValues.size(); ++index) {
                 QLabel *label = new QLabel();
