@@ -10,6 +10,8 @@
 #include <QVBoxLayout>
 #include <QFont>
 #include <QWidget>
+#include <QScrollArea>
+#include <QFormLayout>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -319,6 +321,23 @@ void MainWindow::measureMenuPressed(){
 
 void MainWindow::historyMenuPressed(){
     changePage(5);
+    //clear the history
+    ui->historyTab->clear();
+
+    //begin creating tabs for each measurement
+    for(Measurement* m: profiles[selectedProfile]->getAllMeasurements()){
+        //create widget and layout
+        QWidget* measurementWidget = new QWidget();
+        QFormLayout* layout = new QFormLayout();
+        measurementWidget->setLayout(layout);
+
+        for(int i = 0; i < m->getValues().size(); ++i){//add measurement labels to the widget
+            QLabel* label = new QLabel("Point " + QString::number(i+1) + " Value: " +QString::number(m->getValues()[i]));
+            layout->addWidget(label);
+        }
+
+        ui->historyTab->addTab(measurementWidget,m->getTimeRecorded());
+    }
 }
 
 void MainWindow::on_profileComboBox_currentIndexChanged(int index){

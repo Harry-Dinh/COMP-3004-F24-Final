@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>939</width>
-    <height>641</height>
+    <height>692</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>50</y>
       <width>461</width>
-      <height>581</height>
+      <height>631</height>
      </rect>
     </property>
     <property name="palette">
@@ -489,7 +489,7 @@
         <x>0</x>
         <y>20</y>
         <width>461</width>
-        <height>561</height>
+        <height>611</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -722,7 +722,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>550</y>
+      <y>600</y>
       <width>441</width>
       <height>80</height>
      </rect>

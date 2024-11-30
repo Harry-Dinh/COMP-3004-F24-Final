@@ -78,7 +78,7 @@ bool history::deleteProfile(int pid){
 
 bool history::addHealth(Measurement*& measurement){
     raDoTechDB.transaction();
-    vector<double>& measures = measurement->getValues(); //get list of measures from scan
+    QVector<double> measures = measurement->getValues(); //get list of measures from scan
 
     QSqlQuery query;
     //store left and right values from measures
