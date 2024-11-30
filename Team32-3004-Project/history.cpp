@@ -184,9 +184,8 @@ QVector<Measurement*> history::getHealth(int id){
     query.exec();
 
     while(query.next()){ // go through each entry and add a scan object for each.
-        QDateTime scanTime = QDateTime::fromString(query.value(1).toString(),"yyyy-MM-dd hh:mm");
+        QDateTime scanTime = QDateTime::fromString(query.value(1).toString());
         Measurement *scan = new Measurement(query.value(0).toInt(), scanTime); //scan object
-
 
         /*
         Measurement m1 = Measurement(intToMeridian(1), query.value(2).toDouble(), query.value(3).toDouble());
