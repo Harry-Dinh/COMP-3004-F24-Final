@@ -56,3 +56,7 @@ QString Profile::getFirstName(){
 Measurement* Profile::getMeasurement(int index){
     return this->measurements[index];
 }
+
+QVector<Measurement*> Profile::getAllMeasurements(){
+    return this->measurements;
+}

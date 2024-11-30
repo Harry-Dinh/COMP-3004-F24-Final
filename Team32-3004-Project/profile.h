@@ -20,6 +20,7 @@ class Profile{
         int getID();
         QString getFirstName();
         Measurement* getMeasurement(int index);
+        QVector<Measurement*> getAllMeasurements();
     private:
         int id;//user's id
         QString firstName;//stores first name of user
