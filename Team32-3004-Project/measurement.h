@@ -19,7 +19,7 @@ class Measurement {
         QString timeRecorded;
         
         /// @brief An array storing 24 meridian values
-        vector<double> meridianValues;
+        QVector<double> meridianValues;
         
     public:
         
@@ -29,7 +29,7 @@ class Measurement {
         Measurement(int userID, QDateTime& timeRecorded);
         
         /// @brief Exisitng constructor, **Use this to load existing data into memory**, like loading history data.
-        Measurement(int userID, QDateTime& timeRecorded, vector<double>& meridianValues);
+        Measurement(int userID, QDateTime& timeRecorded, QVector<double> meridianValues);
         
         // GETTERS
         
@@ -46,7 +46,7 @@ class Measurement {
         /**
          * @brief Return the entire array of meridian values
          */
-        vector<double>& getValues();
+        QVector<double> getValues();
         
         /**
          * @brief Return a single meridian value inside the array.
@@ -73,7 +73,7 @@ class Measurement {
          * @brief Setter for the meridian array
          * @param src The data source to assign
          */
-        void setArray(vector<double>& src);
+        void setArray(QVector<double> src);
         
         /**
          * @brief Add an existing value to the meridian array

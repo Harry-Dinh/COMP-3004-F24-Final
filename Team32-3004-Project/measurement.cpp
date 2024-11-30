@@ -8,7 +8,7 @@ Measurement::Measurement(int userID, QDateTime& timeRecorded) {
     this->timeRecorded = timeRecorded.toString();
 }
 
-Measurement::Measurement(int userID, QDateTime& timeRecorded, vector<double>& meridianValues) {
+Measurement::Measurement(int userID, QDateTime& timeRecorded, QVector<double> meridianValues) {
     this->userID = userID;
     this->timeRecorded = timeRecorded.toString();
     this->meridianValues = meridianValues;
@@ -22,7 +22,7 @@ QString Measurement::getTimeRecorded() {
     return this->timeRecorded;
 }
 
-vector<double>& Measurement::getValues() {
+QVector<double> Measurement::getValues() {
     return this->meridianValues;
 }
 
@@ -42,7 +42,7 @@ void Measurement::setTimeRecorded(QDateTime& timeRecorded) {
     this->timeRecorded = timeRecorded.toString();
 }
 
-void Measurement::setArray(vector<double>& src) {
+void Measurement::setArray(QVector<double> src) {
     this->meridianValues = src;
 }
 
