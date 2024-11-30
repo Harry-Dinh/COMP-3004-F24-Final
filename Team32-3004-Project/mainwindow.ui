@@ -91,7 +91,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
@@ -476,8 +476,7 @@
         <string>Bring these measurements to your doctor to have a better insight on what these data mean for your overall health.</string>
        </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::DialogInformation">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
        </property>
       </item>
      </widget>
@@ -652,7 +651,7 @@
       <string>Title</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="backButton">
@@ -679,7 +678,7 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <widget class="QPushButton" name="powerButton">
      <property name="geometry">
