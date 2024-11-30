@@ -14,11 +14,11 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
     ui->userId->setText(profile->getFirstName());
 
     QScrollArea *scrollArea = new QScrollArea(this);
-    scrollArea->setGeometry(10, 75, 300, 200);
+    scrollArea->setGeometry(10, 75, 300, 350);
 
-
+    // Setting up the first summary window (i.e. the window that has the user's name and list of past measurements)
     QWidget *contentWidget = new QWidget();
-    QHBoxLayout *layout = new QHBoxLayout(contentWidget);
+    QVBoxLayout *layout = new QVBoxLayout(contentWidget);
 
     for (int i = 0; i < profile->getAllMeasurements().size(); ++i) {
         QPushButton *button = new QPushButton(QString(), contentWidget);
@@ -43,15 +43,17 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
             timeStamp->setText(measurement->getTimeRecorded());
             timeStamp->setMinimumSize(200, 50);
             measurementLayout->addWidget(timeStamp);
-
+            
+            // Setting up the labels in the individual measurement window
             for (std::size_t index = 0; index < meridianValues.size(); ++index) {
                 QLabel *label = new QLabel();
-                label->setText(QString("Measurement %1: %2").arg(index).arg(meridianValues[index]));
-                label->setMinimumSize(200, 25);
+                QString valueInterpretation = QString::fromUtf8(measurement->interpretValue(measurement->getValue(index)).c_str());
+                label->setText(QString("Measurement %1: %2 (%3)").arg(index).arg(meridianValues[index]).arg(valueInterpretation));
+                label->setMinimumSize(350, 25);
                 measurementLayout->addWidget(label);
             }
-
-
+            
+            // Scroll area for the individual measurement window
             QScrollArea *scrollArea = new QScrollArea();
             scrollArea->setWidget(measurementWidget);
             scrollArea->setWidgetResizable(true);
