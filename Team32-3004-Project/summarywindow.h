@@ -2,6 +2,8 @@
 #define SUMMARYWINDOW_H
 
 #include <QWidget>
+#include <QDebug>
+#include <QLabel>
 #include "profile.h"
 #include "ui_summarywindow.h"
 
