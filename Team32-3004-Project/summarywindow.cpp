@@ -31,7 +31,7 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
         layout->addWidget(button);
         connect(button, &QPushButton::clicked, this, [profile, i]() {
             QDateTime currentDateTime = QDateTime::currentDateTime();
-            std::vector<double> meridianValues = {1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8};
+            QVector<double> meridianValues = {1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8, 1.2, 3.4, 5.6, 7.8};
             Measurement* measurement = new Measurement(123, currentDateTime, meridianValues); // profile->getMeasurement(i)
             // std::vector<double> meridianValues = measurement->getValues();
 

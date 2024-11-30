@@ -83,9 +83,15 @@ class Measurement {
         
         /**
          * @brief Generate a random number then add it to the back of the array
-         * **This function should be called whenever the user presses the measure button!**
+         * **This function should be called whenever the user presses the "Take Measurement" button!**
          */
         void generateValue();
+        
+        /**
+         * @brief Return one of the 3 strings: Hyperactive (above established bound), Balanced (within established bound), and Hypoactive (below established bound)
+         * @param value the meridian value to interpret
+         */
+        string interpretValue(double value);
 };
 
 #endif // MEASUREMENT_H

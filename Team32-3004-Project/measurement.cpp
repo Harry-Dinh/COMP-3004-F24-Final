@@ -60,3 +60,9 @@ void Measurement::generateValue() {
     double randValue = distr(gen);
     this->meridianValues.push_back(randValue);
 }
+
+string Measurement::interpretValue(double value) {
+    if (value < HEALTHY_LOWER_BOUND) return "Hypoactive";
+    else if (value > HEALTHY_UPPER_BOUND) return "Hyperactive";
+    return "Balanced";
+}
