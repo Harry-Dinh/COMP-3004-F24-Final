@@ -89,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 MainWindow::~MainWindow() {
     delete ui;
     delete this->batteryTimer;
+    delete this->chargingTimer;
 
     //delete all profiles
     while(!profiles.empty()){

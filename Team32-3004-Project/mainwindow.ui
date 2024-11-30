@@ -91,7 +91,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
@@ -650,6 +650,9 @@
      </property>
      <property name="text">
       <string>Title</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="backButton">
