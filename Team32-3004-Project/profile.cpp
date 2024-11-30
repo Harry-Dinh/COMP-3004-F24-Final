@@ -41,6 +41,10 @@ void Profile::addMeasurement(Measurement *m){
     this->measurements.append(m);
 }
 
+int Profile::getNumMeasurements(){
+    return this->measurements.size();
+}
+
 int Profile::getID(){
     return this->id;
 }
