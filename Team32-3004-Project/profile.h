@@ -16,6 +16,7 @@ class Profile{
         ~Profile();
 
         void addMeasurement(Measurement *m);
+        int getNumMeasurements();
         int getID();
         QString getFirstName();
         Measurement* getMeasurement(int index);
