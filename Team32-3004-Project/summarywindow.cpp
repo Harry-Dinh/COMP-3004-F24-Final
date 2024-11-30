@@ -20,7 +20,7 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
     QWidget *contentWidget = new QWidget();
     QHBoxLayout *layout = new QHBoxLayout(contentWidget);
 
-    for (int i = 0; i < profile->getNumMeasurements(); ++i) {
+    for (int i = 0; i < profile->getAllMeasurements().size(); ++i) {
         QPushButton *button = new QPushButton(QString(), contentWidget);
         button->setMinimumSize(200, 50);
         button->setText(profile->getMeasurement(i)->getTimeRecorded());
