@@ -386,10 +386,13 @@ void MainWindow::on_viewSummaryButton_clicked()
 
 void MainWindow::on_summaryButton_clicked()
 {
-    changePage(5);
     qInfo() << "showing summary";
     qInfo() << this->selectedProfile;
     if (!summaryWindow) {
+        summaryWindow = new SummaryWindow(profiles[selectedProfile]);
+    }
+    else{
+        delete summaryWindow;
         summaryWindow = new SummaryWindow(profiles[selectedProfile]);
     }
     summaryWindow->show();
