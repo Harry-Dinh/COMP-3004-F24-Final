@@ -1,6 +1,6 @@
 #include "summary.h"
 
-Summary::Summary(Measurement* scan) : measurement(scan) {
+Summary::Summary(Measurement* measurement) : measurement(measurement) {
 
 }
 

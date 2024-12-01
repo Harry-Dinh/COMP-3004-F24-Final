@@ -7,7 +7,7 @@
 class Summary : public QObject{
     Q_OBJECT
     public:
-        Summary(Measurement* scan);
+        Summary(Measurement* measurement);
 
         int getUserID() const;
         QString getTimeRecorded();
