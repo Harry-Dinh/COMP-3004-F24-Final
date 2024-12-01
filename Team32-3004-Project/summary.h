@@ -13,7 +13,7 @@ class Summary : public QObject{
         QString getTimeRecorded();
         int getAmountOfMeasurements();
     private:
-        Measurement* scan;
+        Measurement* measurement;
 
 };
 

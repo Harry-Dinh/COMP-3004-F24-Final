@@ -1,17 +1,17 @@
 #include "summary.h"
 
-Summary::Summary(Measurement* scan) : scan(scan) {
+Summary::Summary(Measurement* scan) : measurement(scan) {
 
 }
 
 int Summary::getUserID() const {
-    return scan->getUserID();
+    return measurement->getUserID();
 }
 
 QString Summary::getTimeRecorded() {
-    return scan->getTimeRecorded();
+    return measurement->getTimeRecorded();
 }
 
 int Summary::getAmountOfMeasurements() {
-    return scan->getValues().size();
+    return measurement->getValues().size();
 }
