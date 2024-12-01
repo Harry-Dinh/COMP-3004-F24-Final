@@ -45,7 +45,7 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
             measurementLayout->addWidget(timeStamp);
             
             // Setting up the labels in the individual measurement window
-            for (std::size_t index = 0; index < meridianValues.size(); ++index) {
+            for (int index = 0; index < meridianValues.size(); ++index) {
                 QLabel *label = new QLabel();
                 QString valueInterpretation = QString::fromUtf8(measurement->interpretValue(measurement->getValue(index)).c_str());
                 label->setText(QString("Measurement %1: %2 (%3)").arg(index).arg(meridianValues[index]).arg(valueInterpretation));
