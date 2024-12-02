@@ -12,5 +12,6 @@ This file contains all of the constants that are used throughout the project.
 #define HEALTH_CAT_COUNT 5                  // The number of health categories displayed on the summary screen
 #define HEALTHY_UPPER_BOUND 70              // The upper bound for comparing health meridian values
 #define HEALTHY_LOWER_BOUND 47              // The lower bound for comparing health meridian values
+#define MAXPROFILES 5                       // The maximum number of user profiles that this app supports
 
 #endif // DEFS_H
