@@ -4,17 +4,17 @@
 #include <QObject>
 #include "measurement.h"
 
-class Summary : public QObject{
+class Summary : public QObject {
     Q_OBJECT
+    private:
+        Measurement* measurement;
+    
     public:
         Summary(Measurement* measurement);
 
         int getUserID() const;
         QString getTimeRecorded();
         int getAmountOfMeasurements();
-    private:
-        Measurement* measurement;
-
 };
 
 #endif // SUMMARY_H
