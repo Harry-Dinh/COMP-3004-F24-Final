@@ -1,8 +1,8 @@
 #include "history.h"
 #include "defs.h"
-const QString history::path = "radotech.db";
+const QString History::path = "radotech.db";
 
-history::history()
+History::History()
 {
     raDoTechDB = QSqlDatabase::addDatabase("QSQLITE");
     raDoTechDB.setDatabaseName(path);
@@ -18,7 +18,7 @@ history::history()
     }
 }
 
-history::~history()
+History::~History()
 {
     if (raDoTechDB.isOpen()){
         raDoTechDB.close();
@@ -26,7 +26,7 @@ history::~history()
     }
 }
 
-bool history::createTables(){
+bool History::createTables(){
 
     raDoTechDB.transaction();
     QSqlQuery query;
@@ -40,10 +40,10 @@ bool history::createTables(){
     return raDoTechDB.commit();
 }
 
-bool history::addProfile(int pid, const QString& fname, const QString& lname, int weight, int height, const QString& pDOB, const QString& pcountry, const QString& pphone, const QString& pemail, const QString& ppassword){
+bool History::addProfile(int pid, const QString& fname, const QString& lname, int weight, int height, const QString& pDOB, const QString& pcountry, const QString& pphone, const QString& pemail, const QString& ppassword){
     raDoTechDB.transaction();
     QSqlQuery query;
-
+    //take data from profile object and insert into database
     query.prepare("INSERT OR IGNORE INTO profiles (id, firstName, lastName, weight, height, DOB, country, phone, email, password) VALUES (:id, :firstName, :lastName, :weight, :height, :DOB, :country, :phone, :email, :password);");
     query.bindValue(":id", pid);
     query.bindValue(":firstName", fname);
@@ -61,7 +61,7 @@ bool history::addProfile(int pid, const QString& fname, const QString& lname, in
     return raDoTechDB.commit();
 }
 
-bool history::deleteProfile(int pid){
+bool History::deleteProfile(int pid){
     raDoTechDB.transaction();
     QSqlQuery query;
     //delete profile with this id
@@ -69,19 +69,19 @@ bool history::deleteProfile(int pid){
     query.addBindValue(pid);
     query.exec();
 
-//    //delete all measurements associated with this id
+    //delete all measurements associated with this id
     query.prepare("DELETE FROM measurements WHERE mId=?");
     query.addBindValue(pid);
     query.exec();
     return raDoTechDB.commit();
 }
 
-bool history::addHealth(Measurement*& measurement){
+bool History::addHealth(Measurement*& measurement){
     raDoTechDB.transaction();
     QVector<double> measures = measurement->getValues(); //get list of measures from scan
 
     QSqlQuery query;
-    //store left and right values from measures
+    //store all data included in a measurement, ie. userid, time of measurement, and 24 data points from electric current.
     query.prepare("INSERT INTO measurements (mId, date, m_1, m_2, m_3, m_4, m_5, m_6, m_7, m_8, m_9, m_10, m_11, m_12, m_13, m_14, m_15, m_16, m_17, m_18, m_19, m_20, m_21, m_22, m_23, m_24) VALUES (:mId, :date, :m_1, :m_2, :m_3, :m_4, :m_5, :m_6, :m_7, :m_8, :m_9, :m_10, :m_11, :m_12, :m_13, :m_14, :m_15, :m_16, :m_17, :m_18, :m_19, :m_20, :m_21, :m_22, :m_23, :m_24);");
     query.bindValue(":mId", measurement->getUserID());
     query.bindValue(":date", measurement->getTimeRecorded());
@@ -119,8 +119,8 @@ bool history::addHealth(Measurement*& measurement){
         return false;
     }
 }
-
-Profile* history::getProfile(int id){
+//Finds profile in database based on it's id.
+Profile* History::getProfile(int id){
     raDoTechDB.transaction();
     QSqlQuery query;
     query.prepare("SELECT * FROM profiles WHERE id=:id");
@@ -130,10 +130,7 @@ Profile* history::getProfile(int id){
     if (!raDoTechDB.commit()) {
         qDebug() << "Error: Query failed to execute";
     }
-    //QDate date = QDate::fromString(query.value(5).toString(), "yyyy-MM-dd");
-    //if (!date.isValid()) {
-    //    qDebug() << "Error: Invalid date format";
-    //}
+
     int profileId = -1;
     QString fName;
     QString lName;
@@ -144,7 +141,6 @@ Profile* history::getProfile(int id){
     QString phone;
     QString email;
     QString password;
-
     while (query.next()){
         profileId = query.value(0).toInt();
         fName = query.value(1).toString();
@@ -162,7 +158,7 @@ Profile* history::getProfile(int id){
     return p;
 }
 
-QVector<int> history::getAllProfileID(){
+QVector<int> History::getAllProfileID(){
     raDoTechDB.transaction();
     QSqlQuery query;
     QVector<int> ids;
@@ -174,40 +170,24 @@ QVector<int> history::getAllProfileID(){
     return ids;
 }
 
-QVector<Measurement*> history::getHealth(int id){
+QVector<Measurement*> History::getHealth(int id){
     QSqlQuery query;
-    QVector<Measurement*> healthHistory; //double check this one and how we are passign it.
+    QVector<Measurement*> healthHistory;
     raDoTechDB.transaction();
-
+    //query database for all measurements that shares user id.
     query.prepare("SELECT * FROM measurements WHERE mId=:mid");
     query.bindValue(":mid", id);
     query.exec();
 
-    while(query.next()){ // go through each entry and add a scan object for each.
+    while(query.next()){ // go through each entry and add a measurement object for each.
         QDateTime scanTime = QDateTime::fromString(query.value(1).toString());
-        Measurement *scan = new Measurement(query.value(0).toInt(), scanTime); //scan object
-
-        /*
-        Measurement m1 = Measurement(intToMeridian(1), query.value(2).toDouble(), query.value(3).toDouble());
-        Measurement m2 = Measurement(intToMeridian(2), query.value(4).toDouble(), query.value(5).toDouble());
-        Measurement m3 = Measurement(intToMeridian(3), query.value(6).toDouble(), query.value(7).toDouble());
-        Measurement m4 = Measurement(intToMeridian(4), query.value(8).toDouble(), query.value(9).toDouble());
-        Measurement m5 = Measurement(intToMeridian(5), query.value(10).toDouble(), query.value(11).toDouble());
-        Measurement m6 = Measurement(intToMeridian(6), query.value(12).toDouble(), query.value(13).toDouble());
-        Measurement m7 = Measurement(intToMeridian(7), query.value(14).toDouble(), query.value(15).toDouble());
-        Measurement m8 = Measurement(intToMeridian(8), query.value(16).toDouble(), query.value(17).toDouble());
-        Measurement m9 = Measurement(intToMeridian(9), query.value(18).toDouble(), query.value(19).toDouble());
-        Measurement m10 = Measurement(intToMeridian(10), query.value(20).toDouble(), query.value(21).toDouble());
-        Measurement m11 = Measurement(intToMeridian(11), query.value(22).toDouble(), query.value(23).toDouble());
-        Measurement m12 = Measurement(intToMeridian(12), query.value(24).toDouble(), query.value(25).toDouble());
-        */
-
+        Measurement *scan = new Measurement(query.value(0).toInt(), scanTime); //measurement object
 
         for(int i = 2; i<26; i++){ // assign values to measurements and add them to the scan object
             scan->addExistingValue(query.value(i).toDouble());
         }
 
-        healthHistory.push_back( scan );//add scan object to vector.
+        healthHistory.push_back( scan );//add measurement object to vector.
     }
 
     return healthHistory;

@@ -17,7 +17,6 @@ class Menu : public QObject {
     public:
         explicit Menu(const QString &name, Menu *parent);
 
-        void addSubMenu(Menu* m);//add pointer to a submenu to this menu
         QString getName();//return this menu's name
         Menu* getParent();
         int getIndex();

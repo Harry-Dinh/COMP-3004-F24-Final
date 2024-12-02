@@ -50,9 +50,9 @@ class MainWindow : public QMainWindow {
         void addProfile(int id, const QString &firstName, const QString &lastName,
                         int weight, int height, const QString &DOB, const QString &country,
                         const QString &phone, const QString &email, const QString &password);
-        void addProfile(Profile *p);
+        void addProfile(Profile *p);//overloaded addProfile used for loading profiles from the DB
         void loadProfile();//load profile from the SQL database
-        void changePage(int index);
+        void changePage(int index);//change the page index on the UI
         
     public slots:
         /**
