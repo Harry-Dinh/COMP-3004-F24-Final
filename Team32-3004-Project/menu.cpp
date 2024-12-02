@@ -5,10 +5,6 @@ Menu::Menu(const QString &name, Menu *parent){
     this->parent = parent;
 }
 
-void Menu::addSubMenu(Menu* m){
-    this->subMenus.append(m);
-}
-
 QString Menu::getName(){
     return this->name;
 }

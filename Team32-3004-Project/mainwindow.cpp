@@ -256,9 +256,6 @@ void MainWindow::addMenu(const QString &name, Menu* parent, int index){
     Menu *m = new Menu(name, parent);
     m->setIndex(index);
     menus.append(m);//add this pointer to the menus list
-    if(parent != nullptr){
-        parent->addSubMenu(m);
-    }
 }
 
 void MainWindow::createProfilePagePressed(){
