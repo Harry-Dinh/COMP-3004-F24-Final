@@ -12,12 +12,12 @@
 /**
  * @brief A class that is responsible for storing the profile data and measurement data for viewing history and future device login.
  */
-class history
+class History
 {
 public:
     static const QString path;
-    history();
-    ~history();
+    History();
+    ~History();
     /**
      * @brief adds a measurement object to the sqlite database
      * @param measurement the measurement object to be stored in the sqlite database

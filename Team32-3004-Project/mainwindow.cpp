@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     changePage(0);
 
-    historydb = new history();
+    historydb = new History();
 
     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
     loadProfile();

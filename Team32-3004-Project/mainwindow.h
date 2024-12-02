@@ -64,7 +64,7 @@ private:
         Menu *currMenu;//pointer to the current menu to display
         int selectedProfile;
         int numProfiles;
-        history* historydb;
+        History* historydb;
 
         bool beginMeasurement;
         Measurement* currMeasurement;//pointer to the current ongoing measurement
