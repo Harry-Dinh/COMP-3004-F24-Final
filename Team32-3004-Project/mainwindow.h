@@ -25,23 +25,23 @@ class MainWindow : public QMainWindow {
         void addProfile(int id, const QString &firstName, const QString &lastName,
                         int weight, int height, const QString &DOB, const QString &country,
                         const QString &phone, const QString &email, const QString &password);
-        void addProfile(Profile *p);
+        void addProfile(Profile *p);//overloaded addProfile used for loading profiles from the DB
         void loadProfile();//load profile from the SQL database
-        void changePage(int index);
+        void changePage(int index);//change the page index on the UI
         
     public slots:
         void drainBattery();
         void chargeDevice();
         void powerButtonPressed();
         void rechargeButtonPressed();
-        void backButtonPressed();
-        void createProfilePagePressed();
-        void deleteProfilePressed();
-        void loginProfilePressed();
-        void measureMenuPressed();
-        void historyMenuPressed();
-        void probePressed();
-        void createProfile();
+        void backButtonPressed();//sets the current page to the menu's parent menu
+        void createProfilePagePressed();//sets current page to the profile creation menu
+        void deleteProfilePressed();//deletes the selected profile
+        void loginProfilePressed();//login as the selected profile
+        void measureMenuPressed();//sets current page to the measurement menu and begins measurement
+        void historyMenuPressed();//sets current page to the history menu
+        void probePressed();//simulate applying the probe on the skin
+        void createProfile();//handle profile creation from ui input fields
         void recommendationPageButtonPressed();
 
 
@@ -58,15 +58,15 @@ private:
         QTimer* batteryTimer;
         QTimer* chargingTimer;
         int batteryPercentage;
-        bool deviceOn;
-        QVector<Profile*> profiles;
-        QVector<Menu*> menus;
+        bool deviceOn;//device on/off state
+        QVector<Profile*> profiles;//stores pointers of profiles in the program
+        QVector<Menu*> menus;//stores pointers of menus in the program
         Menu *currMenu;//pointer to the current menu to display
-        int selectedProfile;
-        int numProfiles;
+        int selectedProfile;//index of the ui's profileComboBox
+        int numProfiles;//stores number of profiles currently loaded in the program
         History* historydb;
 
-        bool beginMeasurement;
+        bool beginMeasurement;//begin measurement state
         Measurement* currMeasurement;//pointer to the current ongoing measurement
         int measurePoint;//number of points measured
 };

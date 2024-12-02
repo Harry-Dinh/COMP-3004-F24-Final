@@ -227,20 +227,16 @@ void MainWindow::addProfile(int id, const QString &firstName, const QString &las
     historydb->addProfile(id, firstName, lastName, weight, height, DOB, country, phone, email, password);
     profiles.append(p);
     ui->profileComboBox->addItem(firstName);
-    qInfo() << "profile added";
 }
 
 void MainWindow::addProfile(Profile *p){
     profiles.append(p);
     ui->profileComboBox->addItem(p->getFirstName());
-    qInfo() << "profile added";
 }
 
 void MainWindow::loadProfile(){
     QVector<int> ids = historydb->getAllProfileID();
-    for(int i = 0; i < ids.size(); ++i){
-        qInfo() << "Loading profile from DB with id: " << ids[i];
-
+    for(int i = 0; i < ids.size(); ++i){//begin loading all profiles from the DB
         Profile *p = historydb->getProfile(ids[i]);
         addProfile(p);
 
@@ -259,35 +255,30 @@ void MainWindow::addMenu(const QString &name, Menu* parent, int index){
 }
 
 void MainWindow::createProfilePagePressed(){
-    qInfo() << "handle profile creation screen";
-    changePage(1);
+    changePage(1);//change page to profile creation page
 }
 
 void MainWindow::deleteProfilePressed(){
-    qInfo() << "handle deleting profile with id: " << profiles[selectedProfile]->getID();
+    //send query to DB to delete the selected profile
     historydb->deleteProfile(profiles[selectedProfile]->getID());
 
-
+    //erase the selected profile from program and UI
     if(profiles.size() != 0){
         profiles.erase(profiles.begin()+selectedProfile);
         ui->profileComboBox->removeItem(selectedProfile);
     }
-
-
-
 }
 
 void MainWindow::loginProfilePressed(){
-    qInfo() << "handle moving to app main menu";
     if(selectedProfile != -1){//a profile is selected
         changePage(2);
     }
 }
 
 void MainWindow::createProfile(){
-    qInfo() << "Create new profile";
+    //take in user input from the ui fields
 
-    if(numProfiles < 5){
+    if(numProfiles < MAXPROFILES){
         QString firstName = ui->fNameTextBox->toPlainText();
         QString lastName = ui->lNameTextBox->toPlainText();
         int weight = ui->weightSpinBox->value();
@@ -309,9 +300,9 @@ void MainWindow::measureMenuPressed(){
     changePage(3);
     beginMeasurement = true;
 
+    //start taking measurements
     QDateTime date = QDateTime::currentDateTime();
     Measurement *m = new Measurement(profiles[selectedProfile]->getID(), date);
-    qInfo() << "Created new Measurement object";
     currMeasurement = m;
     ui->measurePointLabel->setText("Measure point: 1");
 }
@@ -335,12 +326,12 @@ void MainWindow::historyMenuPressed(){
             layout->addWidget(label);
         }
 
+        //add tab with the date of measurement as its header
         ui->historyTab->addTab(measurementWidget,m->getTimeRecorded());
     }
 }
 
 void MainWindow::on_profileComboBox_currentIndexChanged(int index){
-    qInfo() << "selected profile " << index;
     this->selectedProfile = index;
 }
 
@@ -353,7 +344,6 @@ void MainWindow::changePage(int index){
 void MainWindow::probePressed(){
     //make measurements if in the measurement window
     if(beginMeasurement == true && deviceOn){
-        qInfo() << "measuring point " << measurePoint;
 
         //update measurement label
         ui->measurePointLabel->setText("Measure point: "+ QString::number(measurePoint+2));
@@ -364,7 +354,6 @@ void MainWindow::probePressed(){
     }
 
     if(measurePoint == 24){//finished measuring
-        qInfo() << "Add measurement to this profile";
         profiles[selectedProfile]->addMeasurement(currMeasurement);
         historydb->addHealth(currMeasurement);
 
