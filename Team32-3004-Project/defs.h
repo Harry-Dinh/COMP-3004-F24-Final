@@ -12,7 +12,7 @@ using namespace std;
 #define HEALTH_CAT_COUNT 5                  // The number of health categories displayed on the summary screen
 #define HEALTHY_UPPER_BOUND 70              // The upper bound for comparing health meridian values
 #define HEALTHY_LOWER_BOUND 47              // The lower bound for comparing health meridian values
-
+#define MAXPROFILES 5                       // The maximum amount of profiles
 // MARK: HEALTH CATEGORY
 
 typedef enum {

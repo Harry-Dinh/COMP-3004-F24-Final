@@ -1,8 +1,8 @@
 #include "history.h"
 #include "defs.h"
-const QString history::path = "radotech.db";
+const QString History::path = "radotech.db";
 
-history::history()
+History::History()
 {
     raDoTechDB = QSqlDatabase::addDatabase("QSQLITE");
     raDoTechDB.setDatabaseName(path);
@@ -18,7 +18,7 @@ history::history()
     }
 }
 
-history::~history()
+History::~History()
 {
     if (raDoTechDB.isOpen()){
         raDoTechDB.close();
@@ -26,7 +26,7 @@ history::~history()
     }
 }
 
-bool history::createTables(){
+bool History::createTables(){
 
     raDoTechDB.transaction();
     QSqlQuery query;
@@ -40,7 +40,7 @@ bool history::createTables(){
     return raDoTechDB.commit();
 }
 
-bool history::addProfile(int pid, const QString& fname, const QString& lname, int weight, int height, const QString& pDOB, const QString& pcountry, const QString& pphone, const QString& pemail, const QString& ppassword){
+bool History::addProfile(int pid, const QString& fname, const QString& lname, int weight, int height, const QString& pDOB, const QString& pcountry, const QString& pphone, const QString& pemail, const QString& ppassword){
     raDoTechDB.transaction();
     QSqlQuery query;
     //take data from profile object and insert into database
@@ -61,7 +61,7 @@ bool history::addProfile(int pid, const QString& fname, const QString& lname, in
     return raDoTechDB.commit();
 }
 
-bool history::deleteProfile(int pid){
+bool History::deleteProfile(int pid){
     raDoTechDB.transaction();
     QSqlQuery query;
     //delete profile with this id
@@ -76,7 +76,7 @@ bool history::deleteProfile(int pid){
     return raDoTechDB.commit();
 }
 
-bool history::addHealth(Measurement*& measurement){
+bool History::addHealth(Measurement*& measurement){
     raDoTechDB.transaction();
     QVector<double> measures = measurement->getValues(); //get list of measures from scan
 
@@ -120,7 +120,7 @@ bool history::addHealth(Measurement*& measurement){
     }
 }
 //Finds profile in database based on it's id.
-Profile* history::getProfile(int id){
+Profile* History::getProfile(int id){
     raDoTechDB.transaction();
     QSqlQuery query;
     query.prepare("SELECT * FROM profiles WHERE id=:id");
@@ -158,7 +158,7 @@ Profile* history::getProfile(int id){
     return p;
 }
 
-QVector<int> history::getAllProfileID(){
+QVector<int> History::getAllProfileID(){
     raDoTechDB.transaction();
     QSqlQuery query;
     QVector<int> ids;
@@ -170,7 +170,7 @@ QVector<int> history::getAllProfileID(){
     return ids;
 }
 
-QVector<Measurement*> history::getHealth(int id){
+QVector<Measurement*> History::getHealth(int id){
     QSqlQuery query;
     QVector<Measurement*> healthHistory;
     raDoTechDB.transaction();
