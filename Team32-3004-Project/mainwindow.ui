@@ -30,7 +30,7 @@
      <string notr="true">background-color: rgb(222, 221, 218);</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
@@ -415,8 +415,15 @@
         <string>Bring these measurements to your doctor to have a better insight on what these data mean for your overall health.</string>
        </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::DialogInformation">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Interpreting measurement values: HYPERACTIVITY: This organ is more active than an average user; BALANCED: This organ is within the normal state of activity; HYPOACTIVE: This organ is less active than the average user.</string>
+       </property>
+       <property name="icon">
+        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
        </property>
       </item>
      </widget>
@@ -466,7 +473,7 @@
       <string>Title</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="backButton">
@@ -577,13 +584,13 @@
      <string>RaDoTech</string>
     </property>
     <property name="textFormat">
-     <enum>Qt::AutoText</enum>
+     <enum>Qt::TextFormat::AutoText</enum>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>
