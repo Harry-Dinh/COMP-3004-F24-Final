@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->numProfiles = 0;
     this->measurePoint = 0;
     this->currMeasurement = nullptr;
+    this->summaryWindow = nullptr;
 
     //setting ui element states
     ui->measurementHistory->setReadOnly(true);
@@ -374,7 +375,7 @@ void MainWindow::on_summaryButton_clicked()
 {
     qInfo() << "showing summary";
     qInfo() << this->selectedProfile;
-    if (!summaryWindow) {
+    if (summaryWindow == nullptr) {
         summaryWindow = new SummaryWindow(profiles[selectedProfile]);
     }
     else{
