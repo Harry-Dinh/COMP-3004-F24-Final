@@ -117,5 +117,17 @@ class MainWindow : public QMainWindow {
          * @brief Navigate to the recommendations page.
          */
         void recommendationPageButtonPressed();
+
+        /**
+         * @brief Handle when a measurement is interrupted.
+         * occurs during measurement when:
+         *      - back button is pressed
+         *      - device is turned off
+         *      - device runs out of battery
+         */
+        void handleMeasureInterrupt();
+
+    signals:
+        void measurementInterrupted();
 };
 #endif // MAINWINDOW_H

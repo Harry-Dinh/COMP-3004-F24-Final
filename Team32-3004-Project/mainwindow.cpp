@@ -47,6 +47,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     
     // Connect the recharge button to its respective function
     connect(ui->rechargeButton, &QPushButton::clicked, this, &MainWindow::rechargeButtonPressed);
+
+    // Connect measurementInterrupt signal to its handler function
+    connect(this, &MainWindow::measurementInterrupted, this, &MainWindow::handleMeasureInterrupt);
     
     // Set the initial display value for the battery indicator
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
@@ -129,15 +132,7 @@ void MainWindow::drainBattery() {
 
         //device battery ran out before finishing measurement
         if((batteryPercentage == 0 && beginMeasurement == true)){
-            //delete measurement and reset measurement state
-            qInfo() << "Battery died, ending measurement";
-            if(currMeasurement != nullptr){
-                delete currMeasurement;
-            }
-            beginMeasurement = false;
-            currMeasurement = nullptr;
-            measurePoint = 0;
-            
+            emit(measurementInterrupted());
             // Update some UI elements to reflect drained battery level
             ui->measurementHistory->clear();
         }
@@ -167,12 +162,19 @@ void MainWindow::powerButtonPressed() {
         ui->powerButton->setText("Power Off");
         ui->rechargeButton->setDisabled(true);      // Prevent the device from charging when it's on (this is to avoid subtracting then re-adding the same variable)
         deviceOn = true;
-        batteryTimer->start(2000);      // Drain the battery 1% every 2 seconds
+        batteryTimer->start(500);      // Drain the battery 1% every 2 seconds
     } else {
         ui->powerButton->setDefault(false);
         ui->powerButton->setText("Power On");
         ui->rechargeButton->setDisabled(false);
         deviceOn = false;
+
+        if(beginMeasurement){//turned off device during a measurement
+
+            emit(measurementInterrupted());
+        }
+
+
         batteryTimer->stop();           // Simulate the action of turning off the device when the power button is pressed again
     }
 }
@@ -203,17 +205,8 @@ void MainWindow::backButtonPressed(){
             qInfo() << "Exiting measurement";
             ui->measurementHistory->clear();
 
-
             if(beginMeasurement){//exited an ongoing measurement
-                //delete measurement and reset measurement state
-
-                if(currMeasurement != nullptr){
-                    qInfo() << "Deleting this incomplete measurement";
-                    delete currMeasurement;
-                }
-                beginMeasurement = false;
-                currMeasurement = nullptr;
-                measurePoint = 0;
+                emit(measurementInterrupted());
             }
         }
         changePage(currMenu->getParent()->getIndex());
@@ -383,4 +376,18 @@ void MainWindow::on_summaryButton_clicked()
 
 void MainWindow::recommendationPageButtonPressed() {
     changePage(4);
+}
+
+void MainWindow::handleMeasureInterrupt(){
+    //display text in the measurement page
+    ui->measurePointLabel->setText("Device Disconnected, ensure it is on and retry");
+
+    //delete measurement and reset measurement state
+    if(currMeasurement != nullptr){
+        qInfo() << "Deleting this incomplete measurement";
+        delete currMeasurement;
+    }
+    beginMeasurement = false;
+    currMeasurement = nullptr;
+    measurePoint = 0;
 }

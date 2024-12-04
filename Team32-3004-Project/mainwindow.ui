@@ -30,7 +30,7 @@
      <string notr="true">background-color: rgb(222, 221, 218);</string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
@@ -378,7 +378,7 @@
        <rect>
         <x>20</x>
         <y>100</y>
-        <width>131</width>
+        <width>421</width>
         <height>17</height>
        </rect>
       </property>
@@ -415,7 +415,8 @@
         <string>Bring these measurements to your doctor to have a better insight on what these data mean for your overall health.</string>
        </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
+        <iconset theme="QIcon::ThemeIcon::DialogInformation">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </item>
       <item>
@@ -423,7 +424,8 @@
         <string>Interpreting measurement values: HYPERACTIVITY: This organ is more active than an average user; BALANCED: This organ is within the normal state of activity; HYPOACTIVE: This organ is less active than the average user.</string>
        </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
+        <iconset theme="QIcon::ThemeIcon::DialogInformation">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </item>
      </widget>
@@ -443,7 +445,6 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="summaryPage"/>
    </widget>
    <widget class="QWidget" name="Header" native="true">
     <property name="geometry">
@@ -473,7 +474,7 @@
       <string>Title</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="backButton">
@@ -584,13 +585,10 @@
      <string>RaDoTech</string>
     </property>
     <property name="textFormat">
-     <enum>Qt::TextFormat::AutoText</enum>
+     <enum>Qt::PlainText</enum>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>
