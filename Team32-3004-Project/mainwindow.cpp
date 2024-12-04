@@ -12,6 +12,7 @@
 #include <QWidget>
 #include <QScrollArea>
 #include <QFormLayout>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -269,6 +270,16 @@ void MainWindow::addMenu(const QString &name, Menu* parent, int index){
 
 void MainWindow::createProfilePagePressed(){
     changePage(1);//change page to profile creation page
+    ui->fNameTextBox->setText("");
+    ui->lNameTextBox->setText("");
+    ui->weightSpinBox->setValue(0);
+    ui->heightSpinBox->setValue(0);
+    QDate defaultDate;
+    defaultDate.setDate(2000,1,1);
+    ui->dobDateEdit->setDate(defaultDate);
+    ui->countryTextBox->setText("");
+    ui->emailTextBox->setText("");
+    ui->passwordTextBox->setText("");
 }
 
 void MainWindow::deleteProfilePressed(){
@@ -289,8 +300,21 @@ void MainWindow::loginProfilePressed(){
 }
 
 void MainWindow::createProfile(){
-    //take in user input from the ui fields
+    //ensure that the user has entered info in all fields
+    if(ui->fNameTextBox->document()->isEmpty() ||
+       ui->lNameTextBox->document()->isEmpty() ||
+       ui->countryTextBox->document()->isEmpty() ||
+       ui->phoneTextBox->document()->isEmpty() ||
+       ui->emailTextBox->document()->isEmpty() ||
+       ui->passwordTextBox->document()->isEmpty()){
 
+        QMessageBox msgBox;
+        msgBox.setText("Please enter info in empty fields");
+        msgBox.exec();
+        return;
+    }
+
+    //take in user input from the ui fields
     if(numProfiles < MAXPROFILES){
         QString firstName = ui->fNameTextBox->toPlainText();
         QString lastName = ui->lNameTextBox->toPlainText();
