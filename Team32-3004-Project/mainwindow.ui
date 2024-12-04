@@ -553,6 +553,9 @@
     </widget>
    </widget>
    <widget class="QPushButton" name="probeButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>620</x>

@@ -113,6 +113,13 @@ void MainWindow::drainBattery() {
         ui->powerButton->setDisabled(false);
         --batteryPercentage;
         ui->batteryIndicator->display(batteryPercentage);
+        
+        // Change the battery indicator to a red colour to let the user know that the device is low on battery
+        if (batteryPercentage <= 10) {
+            ui->batteryIndicator->setStyleSheet("color: red;");
+            ui->chargeStatus->setText("Battery low, please recharge!");
+            ui->chargeStatus->setStyleSheet("color: red;");
+        }
     } else {
         batteryTimer->stop();       // Stop the timer when the battery level drops to 0
         deviceOn = false;
@@ -124,6 +131,7 @@ void MainWindow::drainBattery() {
             ui->powerButton->setDefault(false);
             ui->powerButton->setText("Power On");
             ui->rechargeButton->setDisabled(false);
+            ui->probeButton->setDisabled(true);
         }
 
         //device battery ran out before finishing measurement
@@ -148,8 +156,15 @@ void MainWindow::chargeDevice() {
     if (batteryPercentage < STARTING_BATTERY_LEVEL) {
         ++batteryPercentage;
         ui->batteryIndicator->display(batteryPercentage);
+        
+        if (batteryPercentage == STARTING_BATTERY_LEVEL) {
+            ui->chargeStatus->setText("Battery fully charged!");
+            ui->chargeStatus->setStyleSheet("color: green;");
+        }
     } else {
         chargingTimer->stop();
+        ui->batteryIndicator->setStyleSheet("");
+        ui->chargeStatus->setStyleSheet("");
     }
 }
 
@@ -165,30 +180,34 @@ void MainWindow::powerButtonPressed() {
         ui->powerButton->setDefault(true);
         ui->powerButton->setText("Power Off");
         ui->rechargeButton->setDisabled(true);      // Prevent the device from charging when it's on (this is to avoid subtracting then re-adding the same variable)
+        ui->probeButton->setDisabled(false);
         deviceOn = true;
         batteryTimer->start(2000);      // Drain the battery 1% every 2 seconds
     } else {
         ui->powerButton->setDefault(false);
         ui->powerButton->setText("Power On");
         ui->rechargeButton->setDisabled(false);
+        ui->probeButton->setDisabled(true);
         deviceOn = false;
         batteryTimer->stop();           // Simulate the action of turning off the device when the power button is pressed again
     }
 }
 
 void MainWindow::rechargeButtonPressed() {
-    if (!ui->rechargeButton->isDefault()) {
+    // Change the states of the associated UI elements when the recharge button is pressed
+    
+    if (!ui->rechargeButton->isDefault()) {     // Recharge button is not pressed
         ui->rechargeButton->setDefault(true);
+        ui->batteryIndicator->setStyleSheet("color: green;");   // Set the battery percentage colour to green to indicate charging
         ui->rechargeButton->setText("Stop Charging");
         ui->powerButton->setDisabled(true);
-        if (batteryPercentage == STARTING_BATTERY_LEVEL) {
-            ui->chargeStatus->setText("Battery fully charged!");
-        } else {
-            ui->chargeStatus->setText("Charging...");
-        }
+        ui->chargeStatus->setText("Charging...");
+        ui->probeButton->setDisabled(true);
+        ui->chargeStatus->setStyleSheet("");
         chargingTimer->start(500);    // Charge the battery 1% every 0.5 seconds
-    } else {
+    } else {    // Recharge button is pressed
         ui->rechargeButton->setDefault(false);
+        ui->batteryIndicator->setStyleSheet("");   // Change the colour of the battery indicator back to default
         ui->rechargeButton->setText("Recharge");
         ui->powerButton->setDisabled(false);
         ui->chargeStatus->setText("Not charging");
