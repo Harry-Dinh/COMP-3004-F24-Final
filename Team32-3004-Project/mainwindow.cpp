@@ -367,10 +367,6 @@ void MainWindow::probePressed(){
     }
 }
 
-void MainWindow::on_viewSummaryButton_clicked()
-{
-}
-
 void MainWindow::on_summaryButton_clicked()
 {
     qInfo() << "showing summary";

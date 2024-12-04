@@ -38,9 +38,6 @@ class MainWindow : public QMainWindow {
         
     private slots:
         void on_profileComboBox_currentIndexChanged(int index);
-        
-        void on_viewSummaryButton_clicked();
-        
         void on_summaryButton_clicked();
 
     public:
