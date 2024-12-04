@@ -48,7 +48,7 @@ SummaryWindow::SummaryWindow(Profile* profile, QWidget *parent) : QWidget(parent
             for (int index = 0; index < meridianValues.size(); ++index) {
                 QLabel *label = new QLabel();
                 QString valueInterpretation = QString::fromUtf8(measurement->interpretValue(measurement->getValue(index)).c_str());
-                label->setText(QString("Measurement %1: %2 (%3)").arg(index).arg(meridianValues[index]).arg(valueInterpretation));
+                label->setText(QString("Measurement %1: %2 (%3)").arg(index+1).arg(meridianValues[index]).arg(valueInterpretation));
                 label->setMinimumSize(350, 25);
                 measurementLayout->addWidget(label);
             }
