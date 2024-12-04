@@ -207,7 +207,7 @@ void MainWindow::rechargeButtonPressed() {
         ui->chargeStatus->setText("Charging...");
         ui->probeButton->setDisabled(true);
         ui->chargeStatus->setStyleSheet("");
-        chargingTimer->start(500);    // Charge the battery 1% every 0.5 seconds
+        chargingTimer->start(2000);    // Charge the battery 1% every 0.5 seconds
     } else {    // Recharge button is pressed
         ui->rechargeButton->setDefault(false);
         ui->batteryIndicator->setStyleSheet("");   // Change the colour of the battery indicator back to default
