@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>RaDoTech App</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QStackedWidget" name="MenuWidget">
@@ -111,10 +111,13 @@
        <string>RaDoTech</string>
       </property>
       <property name="textFormat">
-       <enum>Qt::PlainText</enum>
+       <enum>Qt::TextFormat::PlainText</enum>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </widget>
@@ -446,8 +449,7 @@
         <string>Bring these measurements to your doctor to have a better insight on what these data mean for your overall health.</string>
        </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::DialogInformation">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
        </property>
       </item>
       <item>
@@ -455,8 +457,7 @@
         <string>Interpreting measurement values: HYPERACTIVITY: This organ is more active than an average user; BALANCED: This organ is within the normal state of activity; HYPOACTIVE: This organ is less active than the average user.</string>
        </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::DialogInformation">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="QIcon::ThemeIcon::DialogInformation"/>
        </property>
       </item>
      </widget>
@@ -505,7 +506,7 @@
       <string>Title</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="backButton">
@@ -519,6 +520,19 @@
      </property>
      <property name="text">
       <string>Back</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="showDeviceButton">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>0</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Show Device</string>
      </property>
     </widget>
    </widget>

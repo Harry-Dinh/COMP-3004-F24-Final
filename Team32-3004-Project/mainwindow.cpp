@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->startMeasureButton, &QPushButton::clicked, this, &MainWindow::measureMenuPressed);
     connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
     connect(ui->recommendationButton, &QPushButton::clicked, this, &MainWindow::recommendationPageButtonPressed);
+    connect(ui->showDeviceButton, &QPushButton::clicked, this, &MainWindow::showDeviceButtonPressed);
 
     //connect Device to MainWindow
     connect(device, &Device::sendMeasurement, this, &MainWindow::handleProbePressed);
@@ -315,4 +316,11 @@ void MainWindow::handleMeasureInterrupt(){
     beginMeasurement = false;
     currMeasurement = nullptr;
     measurePoint = 0;
+}
+
+void MainWindow::showDeviceButtonPressed() {
+    if (this->device == nullptr) {
+        this->device = new Device();
+    }
+    this->device->raise();
 }
