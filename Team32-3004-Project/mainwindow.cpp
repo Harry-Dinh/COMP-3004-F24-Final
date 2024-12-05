@@ -319,8 +319,12 @@ void MainWindow::handleMeasureInterrupt(){
 }
 
 void MainWindow::showDeviceButtonPressed() {
-    if (this->device == nullptr) {
-        this->device = new Device();
+    if (device == nullptr) {
+        device = new Device(this);
     }
-    this->device->raise();
+    
+    if (device->isMinimized()) device->showNormal();
+    device->show();
+    device->raise();
+    device->activateWindow();
 }
