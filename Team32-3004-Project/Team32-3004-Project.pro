@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    device.cpp \
     history.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
     summarywindow.cpp
 
 HEADERS += \
+    device.h \
     history.h \
     mainwindow.h \
     measurement.h \
@@ -30,6 +32,7 @@ HEADERS += \
     ui_summarywindow.h
 
 FORMS += \
+    device.ui \
     mainwindow.ui \
     summarywindow.ui
 

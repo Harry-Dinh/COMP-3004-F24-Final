@@ -24,36 +24,22 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
     // Initialize all member variables
     ui->setupUi(this);
-    this->batteryTimer = new QTimer();
-    this->chargingTimer = new QTimer();
-    this->batteryPercentage = STARTING_BATTERY_LEVEL;
-    this->deviceOn = false;
+    device = new Device();
+    device->show();
+
     this->selectedProfile = -1;
     this->numProfiles = 0;
     this->measurePoint = 0;
     this->currMeasurement = nullptr;
     this->summaryWindow = nullptr;
+    this->beginMeasurement = false;
 
     //setting ui element states
     ui->measurementHistory->setReadOnly(true);
 
-    // Connect the battery timer to the appropriate function
-    connect(this->batteryTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::drainBattery));
-    
-    // Connect the charge timer to the appropriate function
-    connect(this->chargingTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::chargeDevice));
-    
-    // Connect the power button to its respective function
-    connect(ui->powerButton, &QPushButton::clicked, this, &MainWindow::powerButtonPressed);
-    
-    // Connect the recharge button to its respective function
-    connect(ui->rechargeButton, &QPushButton::clicked, this, &MainWindow::rechargeButtonPressed);
-
     // Connect measurementInterrupt signal to its handler function
     connect(this, &MainWindow::measurementInterrupted, this, &MainWindow::handleMeasureInterrupt);
     
-    // Set the initial display value for the battery indicator
-    ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 
     //connect ui navigation buttons
     connect(ui->backButton, &QPushButton::clicked, this, &MainWindow::backButtonPressed);
@@ -62,7 +48,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::historyMenuPressed);
     connect(ui->recommendationButton, &QPushButton::clicked, this, &MainWindow::recommendationPageButtonPressed);
 
-    connect(ui->probeButton, &QPushButton::clicked, this, &MainWindow::probePressed);
+    //connect Device to MainWindow
+    connect(device, &Device::sendMeasurement, this, &MainWindow::handleProbePressed);
+    connect(device, &Device::measurementInterrupted, this, &MainWindow::handleMeasureInterrupt);
 
     //create profile menu, index 0
     addMenu("Profile Menu", nullptr, 0);
@@ -91,12 +79,12 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
     loadProfile();
+
+
 }
 
 MainWindow::~MainWindow() {
     delete ui;
-    delete this->batteryTimer;
-    delete this->chargingTimer;
 
     //delete all profiles
     while(!profiles.empty()){
@@ -110,113 +98,6 @@ MainWindow::~MainWindow() {
         menus.pop_back();
     }
     delete historydb;
-}
-
-void MainWindow::drainBattery() {
-    cout << "drainBattery() called" << endl;
-    if (batteryPercentage > 0) {
-        ui->powerButton->setDisabled(false);
-        --batteryPercentage;
-        ui->batteryIndicator->display(batteryPercentage);
-        
-        // Change the battery indicator to a red colour to let the user know that the device is low on battery
-        if (batteryPercentage <= 10) {
-            ui->batteryIndicator->setStyleSheet("color: red;");
-            ui->chargeStatus->setText("Battery low, please recharge!");
-            ui->chargeStatus->setStyleSheet("color: red;");
-        }
-    } else {
-        batteryTimer->stop();       // Stop the timer when the battery level drops to 0
-        deviceOn = false;
-        
-        // Device ran out of battery
-        if (batteryPercentage <= 0) {
-            cout << "Battery died while idling" << endl;
-            ui->powerButton->setDisabled(true);
-            ui->powerButton->setDefault(false);
-            ui->powerButton->setText("Power On");
-            ui->rechargeButton->setDisabled(false);
-            ui->probeButton->setDisabled(true);
-        }
-
-        //device battery ran out before finishing measurement
-        if((batteryPercentage == 0 && beginMeasurement == true)){
-            emit(measurementInterrupted());
-            // Update some UI elements to reflect drained battery level
-            ui->measurementHistory->clear();
-        }
-    }
-}
-
-void MainWindow::chargeDevice() {
-    cout << "chargeDevice() called" << endl;
-    if (batteryPercentage < STARTING_BATTERY_LEVEL) {
-        ++batteryPercentage;
-        ui->batteryIndicator->display(batteryPercentage);
-        
-        if (batteryPercentage == STARTING_BATTERY_LEVEL) {
-            ui->chargeStatus->setText("Battery fully charged!");
-            ui->chargeStatus->setStyleSheet("color: green;");
-        }
-    } else {
-        chargingTimer->stop();
-        ui->batteryIndicator->setStyleSheet("");
-        ui->chargeStatus->setStyleSheet("");
-    }
-}
-
-void MainWindow::powerButtonPressed() {
-    // Prevent the user from turning on the device when the battery died
-    if (batteryPercentage <= 0) {
-        ui->powerButton->setDisabled(true);
-    } else {
-        ui->powerButton->setDisabled(false);
-    }
-    
-    if (!ui->powerButton->isDefault()) {
-        ui->powerButton->setDefault(true);
-        ui->powerButton->setText("Power Off");
-        ui->rechargeButton->setDisabled(true);      // Prevent the device from charging when it's on (this is to avoid subtracting then re-adding the same variable)
-        ui->probeButton->setDisabled(false);
-        deviceOn = true;
-        batteryTimer->start(500);      // Drain the battery 1% every 2 seconds
-    } else {
-        ui->powerButton->setDefault(false);
-        ui->powerButton->setText("Power On");
-        ui->rechargeButton->setDisabled(false);
-        ui->probeButton->setDisabled(true);
-        deviceOn = false;
-
-        if(beginMeasurement){//turned off device during a measurement
-
-            emit(measurementInterrupted());
-        }
-
-
-        batteryTimer->stop();           // Simulate the action of turning off the device when the power button is pressed again
-    }
-}
-
-void MainWindow::rechargeButtonPressed() {
-    // Change the states of the associated UI elements when the recharge button is pressed
-    
-    if (!ui->rechargeButton->isDefault()) {     // Recharge button is not pressed
-        ui->rechargeButton->setDefault(true);
-        ui->batteryIndicator->setStyleSheet("color: green;");   // Set the battery percentage colour to green to indicate charging
-        ui->rechargeButton->setText("Stop Charging");
-        ui->powerButton->setDisabled(true);
-        ui->chargeStatus->setText("Charging...");
-        ui->probeButton->setDisabled(true);
-        ui->chargeStatus->setStyleSheet("");
-        chargingTimer->start(2000);    // Charge the battery 1% every 0.5 seconds
-    } else {    // Recharge button is pressed
-        ui->rechargeButton->setDefault(false);
-        ui->batteryIndicator->setStyleSheet("");   // Change the colour of the battery indicator back to default
-        ui->rechargeButton->setText("Recharge");
-        ui->powerButton->setDisabled(false);
-        ui->chargeStatus->setText("Not charging");
-        chargingTimer->stop();
-    }
 }
 
 void MainWindow::backButtonPressed(){
@@ -378,13 +259,14 @@ void MainWindow::changePage(int index){
     ui->pageTitle->setText(menus[index]->getName());
 }
 
-void MainWindow::probePressed(){
+void MainWindow::handleProbePressed(double value){
     //make measurements if in the measurement window
-    if(beginMeasurement == true && deviceOn){
+
+    if(beginMeasurement == true){
 
         //update measurement label
         ui->measurePointLabel->setText("Measure point: "+ QString::number(measurePoint+2));
-        currMeasurement->generateValue();
+        currMeasurement->addValue(value);
         ui->measurementHistory->append("Point: " + QString::number(measurePoint+1) + " Value: " + QString::number(currMeasurement->getValue(measurePoint)));
         measurePoint++;//move onto next point
 
@@ -398,8 +280,6 @@ void MainWindow::probePressed(){
         currMeasurement = nullptr;
         measurePoint = 0;
         ui->measurePointLabel->setText("Measuring complete");
-
-
     }
 }
 
@@ -424,6 +304,8 @@ void MainWindow::recommendationPageButtonPressed() {
 void MainWindow::handleMeasureInterrupt(){
     //display text in the measurement page
     ui->measurePointLabel->setText("Device Disconnected, ensure it is on and retry");
+    //clear the measurement list
+    ui->measurementHistory->clear();
 
     //delete measurement and reset measurement state
     if(currMeasurement != nullptr){

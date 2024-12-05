@@ -46,19 +46,8 @@ void Measurement::setArray(QVector<double> src) {
     this->meridianValues = src;
 }
 
-void Measurement::addExistingValue(double existingValue) {
-    this->meridianValues.push_back(existingValue);
-}
-
-void Measurement::generateValue() {
-    // Set up the random number generator (got this from some random stackoverflow forum)
-    random_device rand;
-    mt19937 gen(rand());
-    uniform_int_distribution<> distr(RYODORAKU_MIN_BOUND, RYODORAKU_MAX_BOUND); // Define the range (5, 160)
-
-    // Generate the random value then add it to the back of the array
-    double randValue = distr(gen);
-    this->meridianValues.push_back(randValue);
+void Measurement::addValue(double value) {
+    this->meridianValues.push_back(value);
 }
 
 string Measurement::interpretValue(double value) {

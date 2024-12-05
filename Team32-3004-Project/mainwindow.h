@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "history.h"
 #include "summarywindow.h"
+#include "device.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,10 +22,8 @@ class MainWindow : public QMainWindow {
     private:
         Ui::MainWindow *ui;
         SummaryWindow *summaryWindow;
-        QTimer* batteryTimer;
-        QTimer* chargingTimer;
-        int batteryPercentage;
-        bool deviceOn;
+        Device *device;
+
         QVector<Profile*> profiles;
         QVector<Menu*> menus;
         Menu *currMenu;//pointer to the current menu to display
@@ -52,26 +51,6 @@ class MainWindow : public QMainWindow {
         void changePage(int index);//change the page index on the UI
         
     public slots:
-        /**
-         * @brief An action that drains the battery of the device 1% every two seconds to simulate the device being drained of power.
-         */
-        void drainBattery();
-        
-        /**
-         * @brief An action that "charges" the device's battery when it's running low. It charges the battery 1% every 0.5 seconds (faster than draining.)
-         */
-        void chargeDevice();
-        
-        /**
-         * @brief An action that occur when the power button is pressed.
-         */
-        void powerButtonPressed();
-        
-        /**
-         * @brief An action that occur when the recharge button is pressed.
-         */
-        void rechargeButtonPressed();
-        
         /**
          * @brief Navigate to the previous page.
          */
@@ -103,10 +82,9 @@ class MainWindow : public QMainWindow {
         void historyMenuPressed();
         
         /**
-         * @brief Generate a random meridian value within the pre-specified range and add it to a newly created measurement.
-         * This action simulates pressing the device tip against parts of your body to take a reading.
+         * @brief Handle receiving a measurement signal from the Device
          */
-        void probePressed();
+        void handleProbePressed(double value);
         
         /**
          * @brief Create a new user profile for storing a collection of measurements associated with that user.

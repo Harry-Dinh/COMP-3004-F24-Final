@@ -76,17 +76,11 @@ class Measurement {
         void setArray(QVector<double> src);
         
         /**
-         * @brief Add an existing value to the meridian array
-         * @param existingValue the existing value to add
+         * @brief Add an value to the meridian array
+         * @param balue the existing value to add
          */
-        void addExistingValue(double existingValue);
-        
-        /**
-         * @brief Generate a random number then add it to the back of the array
-         * **This function should be called whenever the user presses the "Take Measurement" button!**
-         */
-        void generateValue();
-        
+        void addValue(double value);
+
         /**
          * @brief Return one of the 3 strings: Hyperactive (above established bound), Balanced (within established bound), and Hypoactive (below established bound)
          * @param value the meridian value to interpret
