@@ -28,12 +28,12 @@ class Profile {
         Profile(const Profile &p);
         ~Profile();
 
-        void addMeasurement(Measurement *m);
-        int getNumMeasurements();
-        int getID();
-        QString getFirstName();
-        Measurement* getMeasurement(int index);
-        QVector<Measurement*> getAllMeasurements();
+        void addMeasurement(Measurement *m);//add Measurement to the end of this profile's measurements vector
+        int getNumMeasurements();//returns the number of measurements this profile has stored
+        int getID();//returns the ID
+        QString getFirstName();//returns the profile's first name
+        Measurement* getMeasurement(int index);//returns a measurement at a certain index
+        QVector<Measurement*> getAllMeasurements();//returns a QVector of Measurement*
 };
 
 #endif // PROFILE_H
