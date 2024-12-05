@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>939</width>
+    <width>481</width>
     <height>692</height>
    </rect>
   </property>
@@ -30,14 +30,14 @@
      <string notr="true">background-color: rgb(222, 221, 218);</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="ProfilePage">
      <widget class="QComboBox" name="profileComboBox">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>160</y>
         <width>441</width>
         <height>31</height>
        </rect>
@@ -86,13 +86,35 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
+        <y>130</y>
         <width>62</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
        <string>Profile:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>20</y>
+        <width>241</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 36pt;</string>
+      </property>
+      <property name="text">
+       <string>RaDoTech</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::PlainText</enum>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>
@@ -499,109 +521,6 @@
       <string>Back</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>569</y>
-      <width>441</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>POWER</string>
-    </property>
-    <widget class="QPushButton" name="rechargeButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>31</y>
-       <width>100</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Recharge</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="chargeStatus">
-     <property name="geometry">
-      <rect>
-       <x>122</x>
-       <y>54</y>
-       <width>191</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Not charging</string>
-     </property>
-    </widget>
-    <widget class="QLCDNumber" name="batteryIndicator">
-     <property name="geometry">
-      <rect>
-       <x>340</x>
-       <y>30</y>
-       <width>91</width>
-       <height>71</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="powerButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>70</y>
-       <width>101</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Power On</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QPushButton" name="probeButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>270</y>
-      <width>171</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Take Measurement</string>
-    </property>
-    <property name="default">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>40</y>
-      <width>241</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 36pt;</string>
-    </property>
-    <property name="text">
-     <string>RaDoTech</string>
-    </property>
-    <property name="textFormat">
-     <enum>Qt::PlainText</enum>
-    </property>
-    <property name="scaledContents">
-     <bool>false</bool>
-    </property>
    </widget>
   </widget>
  </widget>

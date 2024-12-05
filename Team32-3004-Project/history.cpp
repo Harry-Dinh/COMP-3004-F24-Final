@@ -184,7 +184,7 @@ QVector<Measurement*> History::getHealth(int id){
         Measurement *scan = new Measurement(query.value(0).toInt(), scanTime); //measurement object
 
         for(int i = 2; i<26; i++){ // assign values to measurements and add them to the scan object
-            scan->addExistingValue(query.value(i).toDouble());
+            scan->addValue(query.value(i).toDouble());
         }
 
         healthHistory.push_back( scan );//add measurement object to vector.
