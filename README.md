@@ -30,6 +30,7 @@
 #### Leng Tan
 - `Profile` class
 - `MainWindow` class
+- `Device` class
 - User profile management
 - Skin contact
 > *Please list of all the things you've done here Leng...*
