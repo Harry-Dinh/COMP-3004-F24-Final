@@ -1,9 +1,11 @@
 #include "device.h"
 #include "ui_device.h"
+#include "defs.h"
+#include <random>
 
 Device::Device(QWidget *parent) : QWidget(parent),ui(new Ui::Device){
     ui->setupUi(this);
-    setWindowTitle("Device");
+    setWindowTitle("RaDoTech Device");
 
     this->batteryTimer = new QTimer();
     this->chargingTimer = new QTimer();
@@ -29,8 +31,7 @@ Device::Device(QWidget *parent) : QWidget(parent),ui(new Ui::Device){
     ui->batteryIndicator->display(STARTING_BATTERY_LEVEL);
 }
 
-Device::~Device()
-{
+Device::~Device() {
     delete this->batteryTimer;
     delete this->chargingTimer;
     delete ui;

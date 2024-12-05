@@ -104,6 +104,11 @@ class MainWindow : public QMainWindow {
          *      - device runs out of battery
          */
         void handleMeasureInterrupt();
+        
+        /**
+         * @brief Bring the device window forward or create one if it hasn't been created already.
+         */
+        void showDeviceButtonPressed();
 
     signals:
         void measurementInterrupted();
