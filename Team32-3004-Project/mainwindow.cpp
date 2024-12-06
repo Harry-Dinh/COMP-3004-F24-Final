@@ -126,18 +126,21 @@ void MainWindow::addProfile(Profile *p){
     ui->profileComboBox->addItem(p->getFirstName());
 }
 
-void MainWindow::loadProfile(){
+void MainWindow::loadProfile() {
     QVector<int> ids = historydb->getAllProfileID();
-    for(int i = 0; i < ids.size(); ++i){//begin loading all profiles from the DB
-        Profile *p = historydb->getProfile(ids[i]);
-        addProfile(p);
-
-        //start loading all measurements associated with this profile
-        for(Measurement *m : historydb->getHealth(ids[i])){
-            p->addMeasurement(m);
+    if (ids.size() > 0) {
+        for(int i = 0; i < ids.size(); ++i){//begin loading all profiles from the DB
+            Profile *p = historydb->getProfile(ids[i]);
+            addProfile(p);
+    
+            //start loading all measurements associated with this profile
+            for(Measurement *m : historydb->getHealth(ids[i])){
+                p->addMeasurement(m);
+            }
         }
+        numProfiles = ids.back()+1;//set the next id
+        return;
     }
-    numProfiles = ids.back()+1;//set the next id
 }
 
 void MainWindow::addMenu(const QString &name, Menu* parent, int index){
