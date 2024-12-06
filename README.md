@@ -48,6 +48,7 @@ This section outlines the information of each file inside this submission.
 - `Team 32 - Final Project Submission Doc.pdf` (file): contains the **use cases** and **design discussion** for some of the decisions made when designing the app
 - `Requirement Traceability Matrix.pdf` (file): the project's requirement traceability matrix
 - `Team Project RaDoTech (Final).pdf` (file): the project's specification
+- `Team 32 - Final Project Demo.mp4` (video): the project's demo video
 
 ## Additional Notes
 *Put any additional notes that you may have for the TA here...*
