@@ -158,6 +158,7 @@ void MainWindow::createProfilePagePressed(){
     QDate defaultDate;
     defaultDate.setDate(2000,1,1);
     ui->dobDateEdit->setDate(defaultDate);
+    ui->phoneTextBox->setText("");
     ui->countryTextBox->setText("");
     ui->emailTextBox->setText("");
     ui->passwordTextBox->setText("");
@@ -171,6 +172,7 @@ void MainWindow::deleteProfilePressed(){
     if(profiles.size() != 0){
         profiles.erase(profiles.begin()+selectedProfile);
         ui->profileComboBox->removeItem(selectedProfile);
+        numProfiles--;
     }
 }
 
