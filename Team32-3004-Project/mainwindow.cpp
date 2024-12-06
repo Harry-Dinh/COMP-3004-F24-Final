@@ -74,14 +74,10 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     //create history menu, index 4
     addMenu("History", menus[2], 4);
 
-    changePage(0);
+    changePage(0);//set the current page to profile selection page
 
     historydb = new History();
-
-    historydb->addProfile(1, "John", "Doe", 70, 175, "1990-01-01", "USA", "123-456-7890", "john.doe@example.com", "password123");
-    loadProfile();
-
-
+    loadProfile();//begin loading all profiles
 }
 
 MainWindow::~MainWindow() {
@@ -303,19 +299,21 @@ void MainWindow::recommendationPageButtonPressed() {
 }
 
 void MainWindow::handleMeasureInterrupt(){
-    //display text in the measurement page
-    ui->measurePointLabel->setText("Device Disconnected, ensure it is on and retry");
-    //clear the measurement list
-    ui->measurementHistory->clear();
+    if(beginMeasurement){//if there is an ongoing measurement
+        //display text in the measurement page
+        ui->measurePointLabel->setText("Device Disconnected, ensure it is on and retry");
+        //clear the measurement list
+        ui->measurementHistory->clear();
 
-    //delete measurement and reset measurement state
-    if(currMeasurement != nullptr){
-        qInfo() << "Deleting this incomplete measurement";
-        delete currMeasurement;
+        //delete measurement and reset measurement state
+        if(currMeasurement != nullptr){
+            qInfo() << "Deleting this incomplete measurement";
+            delete currMeasurement;
+        }
+        beginMeasurement = false;
+        currMeasurement = nullptr;
+        measurePoint = 0;
     }
-    beginMeasurement = false;
-    currMeasurement = nullptr;
-    measurePoint = 0;
 }
 
 void MainWindow::showDeviceButtonPressed() {

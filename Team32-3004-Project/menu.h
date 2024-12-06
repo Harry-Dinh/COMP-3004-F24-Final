@@ -11,16 +11,15 @@ class Menu : public QObject {
     private:
         QString name;//current menu name
         Menu* parent;//pointer to parent;
-        QVector<Menu*> subMenus;//pointers to subMenus
-        int menuIndex;
+        int menuIndex;//current index for this menu
     
     public:
         explicit Menu(const QString &name, Menu *parent);
 
-        QString getName();//return this menu's name
-        Menu* getParent();
-        int getIndex();
-        void setIndex(int i);
+        QString getName();//returns this menu's name
+        Menu* getParent();//returns this menu's parent
+        int getIndex();//returns the index of this menu
+        void setIndex(int i);//sets the index of this menu
 };
 
 #endif // MENU_H
