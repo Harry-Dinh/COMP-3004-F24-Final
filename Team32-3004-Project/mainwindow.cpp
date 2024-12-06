@@ -165,15 +165,15 @@ void MainWindow::createProfilePagePressed(){
 }
 
 void MainWindow::deleteProfilePressed(){
-    //send query to DB to delete the selected profile
-    historydb->deleteProfile(profiles[selectedProfile]->getID());
-
     //erase the selected profile from program and UI
-    if(profiles.size() != 0){
-        profiles.erase(profiles.begin()+selectedProfile);
-        ui->profileComboBox->removeItem(selectedProfile);
-        numProfiles--;
-    }
+       if(profiles.size() != 0){
+           //send query to DB to delete the selected profile
+           historydb->deleteProfile(profiles[selectedProfile]->getID());
+
+           profiles.erase(profiles.begin()+selectedProfile);
+           ui->profileComboBox->removeItem(selectedProfile);
+           numProfiles--;
+       }
 }
 
 void MainWindow::loginProfilePressed(){
