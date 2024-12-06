@@ -158,20 +158,22 @@ void MainWindow::createProfilePagePressed(){
     QDate defaultDate;
     defaultDate.setDate(2000,1,1);
     ui->dobDateEdit->setDate(defaultDate);
+    ui->phoneTextBox->setText("");
     ui->countryTextBox->setText("");
     ui->emailTextBox->setText("");
     ui->passwordTextBox->setText("");
 }
 
 void MainWindow::deleteProfilePressed(){
-    //send query to DB to delete the selected profile
-    historydb->deleteProfile(profiles[selectedProfile]->getID());
-
     //erase the selected profile from program and UI
-    if(profiles.size() != 0){
-        profiles.erase(profiles.begin()+selectedProfile);
-        ui->profileComboBox->removeItem(selectedProfile);
-    }
+       if(profiles.size() != 0){
+           //send query to DB to delete the selected profile
+           historydb->deleteProfile(profiles[selectedProfile]->getID());
+
+           profiles.erase(profiles.begin()+selectedProfile);
+           ui->profileComboBox->removeItem(selectedProfile);
+           numProfiles--;
+       }
 }
 
 void MainWindow::loginProfilePressed(){
