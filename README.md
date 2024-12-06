@@ -25,7 +25,6 @@
 - `MainWindow` class
 - Historical data
 - Persistent data storage
-> *Please list of all the things you've done here Clarke...*
 
 #### Leng Tan
 - `Profile` class
@@ -33,14 +32,12 @@
 - `Device` class
 - User profile management
 - Skin contact
-> *Please list of all the things you've done here Leng...*
 
 #### Asaad Shah
 - `Summary` class
 - `SummaryWindow` class
 - `MainWindow` class
 - Data visualization
-> *Please list of all the things you've done here Asaad...*
 
 ## Submission Info
 This section outlines the information of each file inside this submission.
