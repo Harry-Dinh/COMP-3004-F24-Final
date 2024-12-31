@@ -1,5 +1,8 @@
 # COMP 3004 (F24) Final Project
 
+> [!NOTE]
+> This repository is archived as of December 31, 2024 and will be read-only from now on.
+
 ## Project Information
 This was the final project for the COMP 3004 (Object-Oriented Software Engineering) at Carleton University where the goal was to create a simulator for the RaDoTech device, a health-monitoring device developed by a company of the same name **(please read the disclaimer below.)** The app in this project was written in C++ with the cross-platform Qt framework. Therefore, this app can be run on Windows, macOS and Linux.
 
