@@ -7,6 +7,7 @@ Our team collaborated using GitHub for source control, backup and submit our pro
 
 > [!NOTE]
 > **DISCLAIMER**
+>
 > This project was created purely for **educational purpose** and was NEVER meant to replace the actual device in terms of medical and commercial uses.
 > This repository is public because the team behind this project wanted to present our coding experience in C++ and the Qt framework for our resumes, and NOT to promote a copy/clone of the original device.
 > Please do not use the app in this repository for measuring your own vital signs. This app does NOT actually measure a person's vital sign, it is purely a simulator.
@@ -47,8 +48,8 @@ The list below outlines the tasks that each of us have done for the project.
 - `MainWindow` class
 - Data visualization
 
-## Submission Info
-This section outlines the information of each file inside this submission.
+## Directories and Files Information
+This section outlines the files and directories inside this repository what their purpose.
 
 - `Team32-3004-Project` (directory): contains the source code for the RaDoTech simulator
 - `README.md` (file): this README file
